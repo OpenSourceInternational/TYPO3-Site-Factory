@@ -6,7 +6,6 @@ if (!defined('TYPO3_MODE')) {
 call_user_func(
     function ($extensionKey) {
         if (TYPO3_MODE == 'BE') {
-            \Romm\SiteFactory\Utility\AjaxDispatcherUtility::activateAjaxDispatcher();
 
             // Registering the caches for this extension.
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_' . $extensionKey . '_main'] = [

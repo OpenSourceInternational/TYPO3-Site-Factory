@@ -272,9 +272,11 @@ SiteFactory.Copy = {
 	 * @returns	{*}
 	 */
 	ajaxProcess: function(request, dataType, callBackSuccessFunction, callBackErrorFunction, callBackCompleteFunction) {
+        var ajaxUrl = TYPO3.settings.ajaxUrls['site_factory'];
 		return jQuery.ajax({
 			async:		true,
-			url:		SiteFactory.ajaxUrl,
+			// url:		SiteFactory.ajaxUrl,
+            url:		ajaxUrl,
 			type:		'GET',
 			dataType:	dataType,
 			data: {

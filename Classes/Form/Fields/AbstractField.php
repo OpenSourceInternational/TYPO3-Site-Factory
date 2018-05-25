@@ -16,8 +16,8 @@ namespace Romm\SiteFactory\Form\Fields;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Reflection\ClassReflection;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use Romm\SiteFactory\Form\Validation\AbstractValidator;
 use Romm\SiteFactory\Core\Core;
 
@@ -189,23 +189,34 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
      */
     public function fillConfiguration($configuration)
     {
-        /** @var ClassReflection $propertyReflection */
-        $propertyReflection = GeneralUtility::makeInstance(ClassReflection::class, get_class($this));
-
-        // Setting properties.
         foreach ($configuration as $configurationName => $configurationValue) {
-            if ($propertyReflection->hasProperty($configurationName)) {
-                $property = $propertyReflection->getProperty($configurationName);
-                if ($property->isTaggedWith('fill')) {
-                    $methodName = 'set' . GeneralUtility::underscoredToUpperCamelCase($configurationName);
-                    if ($propertyReflection->hasMethod($methodName)) {
-                        $this->$methodName($configurationValue);
-                    } else {
-                        $this->$configurationName = $configurationValue;
-                    }
-                }
+            $methodName = 'set' . GeneralUtility::underscoredToUpperCamelCase($configurationName);
+            if(method_exists($this, $methodName)){
+                $this->$methodName($configurationValue);
             }
         }
+
+        /**
+         * TODO check ReflectionService
+         */
+        /** @var ReflectionService $propertyReflection */
+
+//        $propertyReflection = GeneralUtility::makeInstance(ReflectionService::class, get_class($this));
+
+        // Setting properties.
+//        foreach ($configuration as $configurationName => $configurationValue) {
+//            if ($propertyReflection->hasProperty($configurationName)) {
+//                $property = $propertyReflection->getProperty($configurationName);
+//                if ($property->isTaggedWith('fill')) {
+//                    $methodName = 'set' . GeneralUtility::underscoredToUpperCamelCase($configurationName);
+//                    if ($propertyReflection->hasMethod($methodName)) {
+//                        $this->$methodName($configurationValue);
+//                    } else {
+//                        $this->$configurationName = $configurationValue;
+//                    }
+//                }
+//            }
+//        }
 
         // Checking required properties.
         $requiredFieldProperties = $this->getRequiredFieldProperties();
@@ -267,7 +278,7 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
     private function getRequiredFieldProperties()
     {
         if (empty($this->finalRequiredFieldsProperties)) {
-            $this->finalRequiredFieldsProperties = ArrayUtility::arrayMergeRecursiveOverrule($this->requiredFieldsConfiguration, $this->defaultRequiredFieldsProperties);
+            $this->finalRequiredFieldsProperties = ArrayUtility::mergeRecursiveWithOverrule($this->requiredFieldsConfiguration, $this->defaultRequiredFieldsProperties);
 
             // Deleting all non string values.
             foreach ($this->finalRequiredFieldsProperties as $key => $configuration) {
@@ -505,7 +516,7 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
         $this->checkValidationArrayConfiguration($this->localValidation);
         $this->checkValidationArrayConfiguration($this->validation);
 
-        return ArrayUtility::arrayMergeRecursiveOverrule($this->localValidation, $this->validation);
+        return ArrayUtility::mergeRecursiveWithOverrule($this->localValidation, $this->validation);
     }
 
     /**

@@ -23,6 +23,7 @@ use Romm\SiteFactory\Form\Fields\Field;
 use Romm\SiteFactory\Utility\TypoScriptUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class containing functions called when a site is being duplicated.
@@ -393,7 +394,16 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
             if (!$modelPageUid) {
                 $flag = false;
             } else {
-                $testModelPageUid = $this->database->exec_SELECTgetSingleRow('uid', 'pages', 'deleted=0 AND uid=' . $modelPageUid);
+
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('pages');
+                $query = $connection->createQueryBuilder();
+                $query->getRestrictions()->removeAll();
+                $query->addSelectLiteral('uid')
+                    ->from('pages')
+                    ->where('deleted=0 AND uid=' . $modelPageUid);
+                $testModelPageUid = $query->execute()->fetchAll();
+
                 if ($testModelPageUid === false) {
                     $flag = false;
                 }
@@ -432,7 +442,16 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
             if (!$duplicatedPageUid) {
                 $flag = false;
             } else {
-                $testDuplicatedPageUid = $this->database->exec_SELECTgetSingleRow('uid', 'pages', 'deleted=0 AND uid=' . $duplicatedPageUid);
+
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('pages');
+                $query = $connection->createQueryBuilder();
+                $query->getRestrictions()->removeAll();
+                $query->addSelectLiteral('uid')
+                    ->from('pages')
+                    ->where('deleted=0 AND uid=' . $duplicatedPageUid);
+                $testDuplicatedPageUid = $query->execute()->fetch();
+                $testDuplicatedPageUid = $testDuplicatedPageUid['uid'];
                 if ($testDuplicatedPageUid === false) {
                     $flag = false;
                 }

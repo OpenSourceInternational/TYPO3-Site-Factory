@@ -15,9 +15,7 @@ namespace Romm\SiteFactory\Core;
 
 use Romm\SiteFactory\Domain\Repository\SaveRepository;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Message;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -28,6 +26,7 @@ use TYPO3\CMS\Extbase\Error;
 use Romm\SiteFactory\Form\FieldsConfigurationPresets;
 use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 
 /**
  * Core class of the extension, containing common functions that can be used
@@ -319,9 +318,7 @@ class Core
      */
     public static function getExtensionConfiguration($configurationName = null)
     {
-        /** @var ConfigurationUtility $configurationUtility */
-        $configurationUtility = self::getObjectManager()->get(ConfigurationUtility::class);
-        $configuration = $configurationUtility->getCurrentConfiguration(self::EXTENSION_KEY);
+        $configuration = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][self::EXTENSION_KEY];
         $result = ($configurationName) ?
             $configuration[$configurationName]['value'] :
             $configuration;
@@ -335,9 +332,9 @@ class Core
     public static function loadJquery()
     {
         /** @var DocumentTemplate $documentTemplate */
-        $documentTemplate = self::getDocumentTemplate();
+        $documentTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $pageRenderer = $documentTemplate->getPageRenderer();
-        $pageRenderer->loadJquery(PageRenderer::JQUERY_VERSION_LATEST, 'local', $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
+        $pageRenderer->loadJquery();
     }
 
     /**

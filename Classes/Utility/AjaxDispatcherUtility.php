@@ -439,7 +439,7 @@ class AjaxDispatcherUtility
         $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = __CLASS__ . '->runFrontendAjaxDispatcher';
 
         if (TYPO3_MODE == 'BE' && $backend) {
-            ExtensionManagementUtility::registerAjaxHandler($name, __CLASS__ . '->run');
+//            ExtensionManagementUtility::registerAjaxHandler($name, __CLASS__ . '->run');
         }
         if (TYPO3_MODE == 'FE' && $frontend) {
             $TYPO3_CONF_VARS['FE']['eID_include'][$name] = __FILE__;

@@ -19,6 +19,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Backend\Http\RouteDispatcher;
+use Psr\Http\Message\ResponseInterface;
 
 class AjaxController extends ActionController
 {
@@ -82,25 +84,40 @@ class AjaxController extends ActionController
             ? $requestArguments['arguments']
             : [];
 
-        if ($extensionName && $vendorName && $controllerName && $actionName) {
-            /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class);
-            $request->setControllerExtensionName($extensionName);
-            $request->setControllerVendorName($vendorName);
-            $request->setControllerName($controllerName);
-            $request->setControllerActionName($actionName);
-            $request->setArguments($arguments);
+        $controller = GeneralUtility::makeInstance($vendorName . '\\' . $extensionName .'\\Controller\\' . $controllerName.'Controller');
 
-            /** @var Response $response */
-            $response = GeneralUtility::makeInstance(Response::class);
+        $result = call_user_func(array($controller, $actionName . 'Action'), $arguments['duplicationToken'], $arguments['index']);
 
-            /** @var Dispatcher $dispatcher */
-            $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-            $dispatcher->dispatch($request, $response);
+        print_r($result);
+        die();
 
-            $result = $response->getContent();
-        }
 
-        return $result;
+        /**
+         * todo check TYPO3\CMS\Backend\Http\RequestHandler::handle()
+         */
+//        $result = $controller->forward($actionName, NULL, NULL, $arguments);
+
+
+//        if ($extensionName && $vendorName && $controllerName && $actionName || false) {
+//            $configuration = null;
+//            /** @var Request $request */
+//            $request = GeneralUtility::makeInstance(Request::class);
+//            $request->setControllerExtensionName($extensionName);
+//            $request->setControllerVendorName($vendorName);
+//            $request->setControllerName($controllerName);
+//            $request->setControllerActionName($actionName);
+//            $request->setArguments($arguments);
+//
+//            /** @var Response $response */
+//            $response = GeneralUtility::makeInstance(Response::class);
+//
+//            /** @var Dispatcher $dispatcher */
+//            $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+//            $dispatcher->dispatch($request, $response);
+//
+//            $result = $response->getContent();
+//        }
+//        return $result;
+
     }
 }
