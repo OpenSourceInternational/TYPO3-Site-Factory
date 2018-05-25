@@ -40,7 +40,7 @@ class FieldsConfigurationPresets
         $query->getRestrictions()->removeAll();
         $query->addSelectLiteral('uid, title')
             ->from('pages')
-            ->where('pid=' . $modelSitesPid);
+            ->where('deleted=0 AND pid=' . $modelSitesPid);
         $aModelSites = $query->execute()->fetchAll();
 
 
