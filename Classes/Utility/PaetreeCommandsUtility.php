@@ -34,41 +34,41 @@ class PaetreeCommandsUtility
     /**
      * Visibly the page
      *
-     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @return void
      */
-    static public function visiblyNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+    static public function visiblyNode(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
         $data['pages'][$node->getWorkspaceId()]['hidden'] = 0;
         self::processTceCmdAndDataMap(array(), $data);
     }
     /**
      * Hide the page
      *
-     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @return void
      */
-    static public function disableNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+    static public function disableNode(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
         $data['pages'][$node->getWorkspaceId()]['hidden'] = 1;
         self::processTceCmdAndDataMap(array(), $data);
     }
     /**
      * Delete the page
      *
-     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @return void
      */
-    static public function deleteNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+    static public function deleteNode(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
         $cmd['pages'][$node->getId()]['delete'] = 1;
         self::processTceCmdAndDataMap($cmd);
     }
     /**
      * Restore the page
      *
-     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param integer $targetId
      * @return void
      */
-    static public function restoreNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node, $targetId) {
+    static public function restoreNode(\TYPO3\CMS\Backend\Tree\TreeNode $node, $targetId) {
         $cmd['pages'][$node->getId()]['undelete'] = 1;
         self::processTceCmdAndDataMap($cmd);
         if ($node->getId() !== $targetId) {
@@ -78,7 +78,7 @@ class PaetreeCommandsUtility
     /**
      * Updates the node label
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode$node
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode
      * @param string $updatedLabel
      * @return void
      */
@@ -134,7 +134,7 @@ class PaetreeCommandsUtility
         }
         $data['pages'][$placeholder]['pid'] = $pid;
         $data['pages'][$placeholder]['doktype'] = $pageType;
-        $data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE);
+        $data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle');
         $newPageId = self::processTceCmdAndDataMap(array(), $data);
         $node = self::getNode($newPageId[$placeholder]);
         if ($pid !== $targetId) {
@@ -235,9 +235,16 @@ class PaetreeCommandsUtility
      * @return string
      */
     static public function getDomainName($uid) {
-        $whereClause = $GLOBALS['TYPO3_DB']->quoteStr('pid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain'), 'sys_domain');
-        $domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
-        return htmlspecialchars($domain['domainName']);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_domain');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('domainName')
+            ->from('sys_domain')
+            ->where('pid=' . intval($uid));
+        $result = $query->execute()->fetch();
+
+        return htmlspecialchars($result['domainName']);
     }
     /**
      * Creates a node with the given record information's
@@ -255,7 +262,7 @@ class PaetreeCommandsUtility
             self::$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
         }
         /** @var $subNode \TYPO3\CMS\Backend\Tree\TreeNode */
-        $subNode = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
+        $subNode = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
         $subNode->setRecord($record);
         $subNode->setCls($record['_CSSCLASS']);
         $subNode->setType('pages');
@@ -270,7 +277,7 @@ class PaetreeCommandsUtility
             $text = $record['nav_title'];
         }
         if (trim($text) === '') {
-            $visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title', TRUE) . ']';
+            $visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title') . ']';
         } else {
             $visibleText = $text;
         }
@@ -291,12 +298,6 @@ class PaetreeCommandsUtility
         }
         // Call stats information hook
         $stat = '';
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = array('pages', $record['uid']);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
         $prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
         $subNode->setEditableText($text);
         $subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);

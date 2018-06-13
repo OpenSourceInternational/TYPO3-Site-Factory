@@ -45,7 +45,8 @@ class AjaxController extends ActionController
             $result = json_encode($result);
         }
 
-        return $result;
+        print_r($result);
+        die();
     }
 
     public function dispatchUserFunction($requestArguments)
@@ -63,7 +64,11 @@ class AjaxController extends ActionController
             $result = GeneralUtility::callUserFunction($requestArguments['function'], $parameters, $this);
         }
 
-        return $result;
+        if (is_array($result)) {
+            $result = json_encode($result);
+        }
+        print_r($result);
+        die();
     }
 
     public function dispatchControllerAction($requestArguments) {
@@ -88,6 +93,9 @@ class AjaxController extends ActionController
 
         $result = call_user_func(array($controller, $actionName . 'Action'), $arguments['duplicationToken'], $arguments['index']);
 
+        if (is_array($result)) {
+            $result = json_encode($result);
+        }
         print_r($result);
         die();
 

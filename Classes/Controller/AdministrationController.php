@@ -73,6 +73,11 @@ class AdministrationController extends AbstractController
 
         // Managing the already duplicated sites list.
         /** @var Save[] $savedSites */
+        $savedSitessPid = Core::getExtensionConfiguration('copyDestination');
+        $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setRespectStoragePage(true);
+        $defaultQuerySettings->setStoragePageIds([$savedSitessPid]);
+        $this->saveRepository->setDefaultQuerySettings($defaultQuerySettings);
         $savedSites = $this->saveRepository->findAll();
 
         $finalSavedSites = [];

@@ -239,6 +239,10 @@ SiteFactory.Copy = {
 		var progressBar = jQuery('.site-duplication .progress .progress-bar');
 		progressBar.attr('aria-valuenow', percent);
 		progressBar.css('width', progressBar.attr('aria-valuenow') + '%');
+        progressBar.html(progressBar.attr('aria-valuenow') + '%');
+		if (percent == 100) {
+            setTimeout(sucesProgressBar, 500);
+		}
 	},
 
 	/**
@@ -297,3 +301,13 @@ SiteFactory.Copy = {
 		});
 	}
 };
+
+
+/**
+ * add succes class to progressbar
+ */
+function sucesProgressBar() {
+    var progressBar = jQuery('.site-duplication .progress .progress-bar');
+    progressBar.removeClass('progress-bar-info');
+    progressBar.addClass('progress-bar-success');
+}

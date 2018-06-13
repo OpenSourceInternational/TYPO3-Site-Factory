@@ -220,9 +220,11 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
 
         // Checking required properties.
         $requiredFieldProperties = $this->getRequiredFieldProperties();
-        foreach ($requiredFieldProperties as $configurationName) {
-            if (!$this->$configurationName) {
-                throw new \Exception('The field "' . $this->name . '" must have a value for "' . $configurationName . '".', 1423775355);
+        if (is_array($requiredFieldProperties)) {
+            foreach ($requiredFieldProperties as $configurationName) {
+                if (!$this->$configurationName) {
+                    throw new \Exception('The field "' . $this->name . '" must have a value for "' . $configurationName . '".', 1423775355);
+                }
             }
         }
     }
@@ -237,10 +239,12 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
     {
         $validation = $this->getValidation();
 
-        foreach ($validation as $validatorName => $validatorConfiguration) {
-            /** @var AbstractValidator $validator */
-            $validator = $validatorConfiguration['validator'];
-            $this->validationResult[$validatorName] = $validator->validate($this);
+        if (is_array($validation)) {
+            foreach ($validation as $validatorName => $validatorConfiguration) {
+                /** @var AbstractValidator $validator */
+                $validator = $validatorConfiguration['validator'];
+                $this->validationResult[$validatorName] = $validator->validate($this);
+            }
         }
 
         return $this;
@@ -281,9 +285,11 @@ abstract class AbstractField extends AbstractEntity implements FieldInterface
             $this->finalRequiredFieldsProperties = ArrayUtility::mergeRecursiveWithOverrule($this->requiredFieldsConfiguration, $this->defaultRequiredFieldsProperties);
 
             // Deleting all non string values.
-            foreach ($this->finalRequiredFieldsProperties as $key => $configuration) {
-                if (!is_string($configuration)) {
-                    unset($this->finalRequiredFieldsProperties[$key]);
+            if (is_array($this->finalRequiredFieldsProperties)) {
+                foreach ($this->finalRequiredFieldsProperties as $key => $configuration) {
+                    if (!is_string($configuration)) {
+                        unset($this->finalRequiredFieldsProperties[$key]);
+                    }
                 }
             }
         }

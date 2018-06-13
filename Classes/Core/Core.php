@@ -319,9 +319,15 @@ class Core
     public static function getExtensionConfiguration($configurationName = null)
     {
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][self::EXTENSION_KEY];
-        $result = ($configurationName) ?
-            $configuration[$configurationName]['value'] :
-            $configuration;
+
+        if ($configurationName) {
+            if (isset($configuration[$configurationName])) {
+                $result = $configuration[$configurationName];
+
+            }
+        } else {
+            $result = $configuration;
+        }
 
         return $result;
     }
@@ -389,14 +395,6 @@ class Core
     public static function getProcessedFolderPath()
     {
         return self::PROCESSED_FOLDER_PATH;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    public static function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 }

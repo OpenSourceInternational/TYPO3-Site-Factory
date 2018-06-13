@@ -174,15 +174,18 @@ class ConstantManagerUtility
     public static function createPageTemplateIfNone($pageUid)
     {
         if (self::getPageTemplate($pageUid) === false) {
-            Core::getDatabase()->exec_INSERTquery(
-                'sys_template',
-                [
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
+            $query = $connection->createQueryBuilder();
+            $query->getRestrictions()->removeAll();
+            $query->insert('sys_template')
+                ->values([
                     'pid'    => intval($pageUid),
                     'title'  => 'Site Factory Template',
                     'tstamp' => time(),
                     'crdate' => time(),
-                ]
-            );
+                ])->execute();
+
         }
     }
 

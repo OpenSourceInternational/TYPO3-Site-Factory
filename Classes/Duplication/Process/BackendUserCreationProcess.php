@@ -152,11 +152,13 @@ class BackendUserCreationProcess extends AbstractDuplicationProcess
      */
     private function fixFileMountForBackendUser(BackendUser $backendUser, FileMount $fileMount)
     {
-        return $this->database->exec_UPDATEquery(
-            'be_users',
-            'uid=' . $backendUser->getUid(),
-            ['file_mountpoints' => $fileMount->getUid()]
-        );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        return $query->update('be_users')
+            ->where('uid=' . $backendUser->getUid())
+            ->values(['file_mountpoints' => $fileMount->getUid()])
+            ->execute();
     }
 
     /**
@@ -169,10 +171,12 @@ class BackendUserCreationProcess extends AbstractDuplicationProcess
      */
     private function fixDataBaseMountPointForBackendUser(BackendUser $backendUser, $uid)
     {
-        return $this->database->exec_UPDATEquery(
-            'be_users',
-            'uid=' . $backendUser->getUid(),
-            ['db_mountpoints' => intval($uid)]
-        );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        return $query->update('be_users')
+            ->where('uid=' . $backendUser->getUid())
+            ->values(['db_mountpoints' => intval($uid)])
+            ->execute();
     }
 }

@@ -15,7 +15,6 @@ namespace Romm\SiteFactory\Duplication;
 
 use Romm\SiteFactory\Form\Fields\AbstractField;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Core\Core;
@@ -82,7 +81,6 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
     public function __construct(array $duplicationData = [], array $duplicationSettings = [], $fieldsValues = [])
     {
         $this->objectManager = Core::getObjectManager();
-        $this->database = Core::getDatabase();
         $this->extensionConfiguration = Core::getExtensionConfiguration();
         $this->result = $this->objectManager->get(Result::class);
 
@@ -370,14 +368,6 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
      *
      * @return bool
      */
-    public function checkAjaxCall()
-    {
-        if ($GLOBALS['ajaxObj'] instanceof AjaxRequestHandler) {
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * This function is only here to help getting the model page's uid and
