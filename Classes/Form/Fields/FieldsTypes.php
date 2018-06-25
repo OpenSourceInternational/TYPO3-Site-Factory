@@ -51,6 +51,7 @@ class FieldsTypes
     }
 
     /**
+     *
      * Returns the different fields types names, based on the TypoScript
      * configuration of a given page.
      *

@@ -276,6 +276,7 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Calls a TypoScript content object.
      *
      * @param $configuration
@@ -300,6 +301,7 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Initializes the $GLOBALS['TSFE'] var, useful everywhere when in a
      * Frontend context.
      *
@@ -353,6 +355,7 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Returns the TypoScript configuration of a given page as an array.
      *
      * @param int $uid

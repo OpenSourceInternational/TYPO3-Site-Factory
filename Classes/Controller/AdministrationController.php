@@ -209,13 +209,14 @@ class AdministrationController extends AbstractController
             }
 
             // Creating a unique id for the generated form.
-            $this->view->assign('formId', 'SiteFactoryForm_' . md5(serialize($this)));
+            $this->view->assign('formId', 'SiteFactoryForm_' . uniqid());
 
             $this->view->assign('fieldsConfiguration', $fields);
         }
     }
 
     /**
+     *
      * Process fields checks.
      *
      * If errors occur, information will be assigned to the view. If all fields
