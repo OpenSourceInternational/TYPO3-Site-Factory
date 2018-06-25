@@ -14,7 +14,6 @@
 namespace Romm\SiteFactory\Duplication;
 
 use Romm\SiteFactory\Form\Fields\AbstractField;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Core\Core;
@@ -35,9 +34,6 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
 
     /** @var ObjectManager */
     protected $objectManager;
-
-    /** @var DatabaseConnection */
-    protected $database;
 
     /**
      * The configuration of the extension.
@@ -72,11 +68,11 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
     private $modelPageUid = null;
 
     /**
-     * Construction function.
-     *
+     * AbstractDuplicationProcess constructor.
      * @param array $duplicationData
      * @param array $duplicationSettings
      * @param array $fieldsValues
+     * @throws \Exception
      */
     public function __construct(array $duplicationData = [], array $duplicationSettings = [], $fieldsValues = [])
     {
@@ -364,7 +360,7 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
     }
 
     /**
-     * Checks if the current request is called via Ajax.
+     * TODO : Checks if the current request is called via Ajax.
      *
      * @return bool
      */

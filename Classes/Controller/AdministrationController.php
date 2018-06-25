@@ -221,7 +221,10 @@ class AdministrationController extends AbstractController
      * If errors occur, information will be assigned to the view. If all fields
      * are correctly filled, a redirection is sent to "processCopyAction".
      *
-     * @param AbstractField[] $fields The fields configuration.
+     * @param $fields
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processFormSubmit($fields)
     {

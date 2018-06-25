@@ -35,7 +35,10 @@ class DuplicationController extends AbstractController
      *
      * See "processDuplication" function for more details.
      *
-     * @return bool
+     * @param null $cacheToken
+     * @param null $index
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function ajaxProcessDuplicationAction($cacheToken = null, $index = null)
     {

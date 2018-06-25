@@ -67,7 +67,7 @@ class FileUtility implements AjaxInterface
      * Handles the existing files of a Fine Uploader form.
      * The values are stored in the GET/POST var at the index "fieldValue".
      *
-     * @return string
+     * @return array
      */
     public function getExistingFiles()
     {

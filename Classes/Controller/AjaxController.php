@@ -16,11 +16,6 @@ namespace Romm\SiteFactory\Controller;
 use Romm\SiteFactory\Utility\AjaxInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
-use TYPO3\CMS\Backend\Http\RouteDispatcher;
-use Psr\Http\Message\ResponseInterface;
 
 class AjaxController extends ActionController
 {
