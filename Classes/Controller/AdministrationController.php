@@ -61,6 +61,22 @@ class AdministrationController extends AbstractController
     public $fieldsConfiguration = null;
 
     /**
+     * @param SaveRepository $saveRepository
+     */
+    public function injectSaveRepository(SaveRepository $saveRepository)
+    {
+        $this->saveRepository = $saveRepository;
+    }
+
+    /**
+     * @param PagesRepository $pagesRepository
+     */
+    public function injectPagesRepository(PagesRepository $pagesRepository)
+    {
+        $this->pagesRepository = $pagesRepository;
+    }
+
+    /**
      * Homepage of the module.
      *
      * Displays a list of the model sites which can be duplicated, and a list of
@@ -115,6 +131,7 @@ class AdministrationController extends AbstractController
      * @param Save $site                   The saved site.
      * @param bool $onlyModificationFields True if you want only the fields that are accessible when editing, false otherwise.
      * @return AbstractField[]
+     * @throws \Exception
      */
     private function fillFieldsValuesFromSavedSite(Save $site, $onlyModificationFields = true)
     {
@@ -223,6 +240,7 @@ class AdministrationController extends AbstractController
      * are correctly filled, a redirection is sent to "processCopyAction".
      *
      * @param $fields
+     * @throws \Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
@@ -343,21 +361,5 @@ class AdministrationController extends AbstractController
 
     public function helpAction()
     {
-    }
-
-    /**
-     * @param SaveRepository $saveRepository
-     */
-    public function injectSaveRepository(SaveRepository $saveRepository)
-    {
-        $this->saveRepository = $saveRepository;
-    }
-
-    /**
-     * @param PagesRepository $pagesRepository
-     */
-    public function injectPagesRepository(PagesRepository $pagesRepository)
-    {
-        $this->pagesRepository = $pagesRepository;
     }
 }
