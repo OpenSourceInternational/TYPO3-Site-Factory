@@ -100,19 +100,16 @@ class DuplicationController extends AbstractController
                         /** @var AbstractDuplicationProcess $class */
                         $class = GeneralUtility::makeInstance($class, $cacheData['duplicationData'], $settings, $cacheData['fieldsValues']);
                         if ($class instanceof AbstractDuplicationProcess) {
-                            // @todo : else
-//                            if (!$checkAjax || ($checkAjax && $class->checkAjaxCall())) {
-                                $class->run();
-                                $fieldsValues = $class->getFieldsValues();
-                                $result->merge($class->getResult());
+                            $class->run();
+                            $fieldsValues = $class->getFieldsValues();
+                            $result->merge($class->getResult());
 
-                                // Saving modified data in cache.
-                                $configuration = [
-                                    'duplicationData' => $class->getDuplicationData(),
-                                    'fieldsValues'    => $fieldsValues
-                                ];
-                                $cache->set($cacheToken, json_encode($configuration));
-//                            }
+                            // Saving modified data in cache.
+                            $configuration = [
+                                'duplicationData' => $class->getDuplicationData(),
+                                'fieldsValues'    => $fieldsValues
+                            ];
+                            $cache->set($cacheToken, json_encode($configuration));
                         } else {
                             throw new \Exception('The class "' . $class . '" must extend "' . AbstractDuplicationProcess::class . '".', 1422887215);
                         }

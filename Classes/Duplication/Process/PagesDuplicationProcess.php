@@ -47,7 +47,7 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         $query->getRestrictions()->removeAll();
         $query->addSelectLiteral('uid')
             ->from('pages')
-            ->where('deleted=0 AND uid=' . intval($copyDestination));
+            ->where('deleted = 0 AND uid = ' . intval($copyDestination));
         $testCopyDestination = $query->execute()->fetchAll();
 
         if ($testCopyDestination === false) {

@@ -16,11 +16,13 @@ namespace Romm\SiteFactory\Controller;
 use Romm\SiteFactory\Utility\AjaxInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 class AjaxController extends ActionController
 {
     public function dispatchAction()
     {
+        $response = new HtmlResponse('');
         $requestArguments = GeneralUtility::_GP('request');
         $result = [];
 
@@ -36,12 +38,8 @@ class AjaxController extends ActionController
             }
         }
 
-        if (is_array($result)) {
-            $result = json_encode($result);
-        }
-
-        print_r($result);
-        die();
+        $response->getBody()->write($result);
+        return $response;
     }
 
     public function dispatchUserFunction($requestArguments)
@@ -59,15 +57,11 @@ class AjaxController extends ActionController
             $result = GeneralUtility::callUserFunction($requestArguments['function'], $parameters, $this);
         }
 
-        if (is_array($result)) {
-            $result = json_encode($result);
-        }
-        print_r($result);
-        die();
+        return $result;
     }
 
     public function dispatchControllerAction($requestArguments) {
-        $result = [];
+
         $extensionName = (true === isset($requestArguments['mvc']['extensionName']))
             ? $requestArguments['mvc']['extensionName']
             : null;
@@ -88,39 +82,7 @@ class AjaxController extends ActionController
 
         $result = call_user_func(array($controller, $actionName . 'Action'), $arguments['duplicationToken'], $arguments['index']);
 
-        if (is_array($result)) {
-            $result = json_encode($result);
-        }
-        print_r($result);
-        die();
-
-
-        /**
-         * todo check TYPO3\CMS\Backend\Http\RequestHandler::handle()
-         */
-//        $result = $controller->forward($actionName, NULL, NULL, $arguments);
-
-
-//        if ($extensionName && $vendorName && $controllerName && $actionName || false) {
-//            $configuration = null;
-//            /** @var Request $request */
-//            $request = GeneralUtility::makeInstance(Request::class);
-//            $request->setControllerExtensionName($extensionName);
-//            $request->setControllerVendorName($vendorName);
-//            $request->setControllerName($controllerName);
-//            $request->setControllerActionName($actionName);
-//            $request->setArguments($arguments);
-//
-//            /** @var Response $response */
-//            $response = GeneralUtility::makeInstance(Response::class);
-//
-//            /** @var Dispatcher $dispatcher */
-//            $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-//            $dispatcher->dispatch($request, $response);
-//
-//            $result = $response->getContent();
-//        }
-//        return $result;
+        return $result;
 
     }
 }
