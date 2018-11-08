@@ -95,14 +95,15 @@ class AdministrationController extends AbstractController
         $defaultQuerySettings->setStoragePageIds([$savedSitessPid]);
         $this->saveRepository->setDefaultQuerySettings($defaultQuerySettings);
         $savedSites = $this->saveRepository->findAll();
+        // Adding root page of the site in the configuration.
+        /** @var QuerySettingsInterface $defaultQuerySettings */
+        $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setIgnoreEnableFields(true);
 
         $finalSavedSites = [];
         foreach ($savedSites as $key => $site) {
-            // Adding root page of the site in the configuration.
-            /** @var QuerySettingsInterface $defaultQuerySettings */
-            $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
-            $defaultQuerySettings->setRespectStoragePage(false);
-            $defaultQuerySettings->setIgnoreEnableFields(true);
+
             $this->pagesRepository->setDefaultQuerySettings($defaultQuerySettings);
 
             /** @var Pages $page */
@@ -168,6 +169,9 @@ class AdministrationController extends AbstractController
      * configuration of this site.
      *
      * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function newAction()
     {
@@ -320,6 +324,10 @@ class AdministrationController extends AbstractController
      *
      * It will get all the information needed to duplicate the model site, and
      * further: management of uploaded files, constants management, etc.
+     *
+     * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
      */
     public function processCopyAction()
     {

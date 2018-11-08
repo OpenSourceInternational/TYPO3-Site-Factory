@@ -38,6 +38,10 @@ class AjaxController extends ActionController
             }
         }
 
+        if (is_array($result)) {
+            $result = json_encode($result);
+        }
+
         $response->getBody()->write($result);
         return $response;
     }
