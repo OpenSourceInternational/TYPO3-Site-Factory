@@ -61,6 +61,22 @@ class AdministrationController extends AbstractController
     public $fieldsConfiguration = null;
 
     /**
+     * @param SaveRepository $saveRepository
+     */
+    public function injectSaveRepository(SaveRepository $saveRepository)
+    {
+        $this->saveRepository = $saveRepository;
+    }
+
+    /**
+     * @param PagesRepository $pagesRepository
+     */
+    public function injectPagesRepository(PagesRepository $pagesRepository)
+    {
+        $this->pagesRepository = $pagesRepository;
+    }
+
+    /**
      * Homepage of the module.
      *
      * Displays a list of the model sites which can be duplicated, and a list of
@@ -73,15 +89,21 @@ class AdministrationController extends AbstractController
 
         // Managing the already duplicated sites list.
         /** @var Save[] $savedSites */
+        $savedSitessPid = Core::getExtensionConfiguration('copyDestination');
+        $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setRespectStoragePage(true);
+        $defaultQuerySettings->setStoragePageIds([$savedSitessPid]);
+        $this->saveRepository->setDefaultQuerySettings($defaultQuerySettings);
         $savedSites = $this->saveRepository->findAll();
+        // Adding root page of the site in the configuration.
+        /** @var QuerySettingsInterface $defaultQuerySettings */
+        $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setIgnoreEnableFields(true);
 
         $finalSavedSites = [];
         foreach ($savedSites as $key => $site) {
-            // Adding root page of the site in the configuration.
-            /** @var QuerySettingsInterface $defaultQuerySettings */
-            $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
-            $defaultQuerySettings->setRespectStoragePage(false);
-            $defaultQuerySettings->setIgnoreEnableFields(true);
+
             $this->pagesRepository->setDefaultQuerySettings($defaultQuerySettings);
 
             /** @var Pages $page */
@@ -110,6 +132,7 @@ class AdministrationController extends AbstractController
      * @param Save $site                   The saved site.
      * @param bool $onlyModificationFields True if you want only the fields that are accessible when editing, false otherwise.
      * @return AbstractField[]
+     * @throws \Exception
      */
     private function fillFieldsValuesFromSavedSite(Save $site, $onlyModificationFields = true)
     {
@@ -146,6 +169,9 @@ class AdministrationController extends AbstractController
      * configuration of this site.
      *
      * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function newAction()
     {
@@ -204,19 +230,24 @@ class AdministrationController extends AbstractController
             }
 
             // Creating a unique id for the generated form.
-            $this->view->assign('formId', 'SiteFactoryForm_' . md5(serialize($this)));
+            $this->view->assign('formId', 'SiteFactoryForm_' . uniqid());
 
             $this->view->assign('fieldsConfiguration', $fields);
         }
     }
 
     /**
+     *
      * Process fields checks.
      *
      * If errors occur, information will be assigned to the view. If all fields
      * are correctly filled, a redirection is sent to "processCopyAction".
      *
-     * @param AbstractField[] $fields The fields configuration.
+     * @param $fields
+     * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processFormSubmit($fields)
     {
@@ -293,6 +324,10 @@ class AdministrationController extends AbstractController
      *
      * It will get all the information needed to duplicate the model site, and
      * further: management of uploaded files, constants management, etc.
+     *
+     * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
      */
     public function processCopyAction()
     {
@@ -334,21 +369,5 @@ class AdministrationController extends AbstractController
 
     public function helpAction()
     {
-    }
-
-    /**
-     * @param SaveRepository $saveRepository
-     */
-    public function injectSaveRepository(SaveRepository $saveRepository)
-    {
-        $this->saveRepository = $saveRepository;
-    }
-
-    /**
-     * @param PagesRepository $pagesRepository
-     */
-    public function injectPagesRepository(PagesRepository $pagesRepository)
-    {
-        $this->pagesRepository = $pagesRepository;
     }
 }

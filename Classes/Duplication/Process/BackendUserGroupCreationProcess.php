@@ -149,10 +149,12 @@ class BackendUserGroupCreationProcess extends AbstractDuplicationProcess
      */
     private function fixFileMountForBackendUserGroup(BackendUserGroup $backendUserGroup, FileMount $fileMount)
     {
-        return $this->database->exec_UPDATEquery(
-            'be_groups',
-            'uid=' . $backendUserGroup->getUid(),
-            ['file_mountpoints' => $fileMount->getUid()]
-        );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_groups');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        return $query->update('be_groups')
+            ->where('uid=' . $backendUserGroup->getUid())
+            ->values(['file_mountpoints' => $fileMount->getUid()])
+            ->execute();
     }
 }

@@ -13,10 +13,11 @@
 
 namespace Romm\SiteFactory\Duplication\Process;
 
-use TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode;
+use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
+use Romm\SiteFactory\Utility\PaetreeCommandsUtility;
 use Romm\SiteFactory\Duplication\AbstractDuplicationProcess;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class containing functions called when a site is being duplicated.
@@ -39,7 +40,16 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         $copyDestination = intval($this->getDuplicationData('copyDestination'));
 
         // Testing if the values and $copyDestination is valid.
-        $testCopyDestination = $this->database->exec_SELECTgetSingleRow('uid', 'pages', 'deleted=0 AND uid=' . intval($copyDestination));
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid')
+            ->from('pages')
+            ->where('deleted = 0 AND uid = ' . intval($copyDestination));
+        $testCopyDestination = $query->execute()->fetchAll();
+
         if ($testCopyDestination === false) {
             $this->addError(
                 'duplication_process.pages_duplication.error.wrong_destination_uid',
@@ -57,11 +67,14 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         // Updating the new page's title with the given one.
         $siteTitle = $this->getField('siteTitle');
         if ($siteTitle) {
-            $this->database->exec_UPDATEquery(
-                'pages',
-                'uid=' . $duplicatedPageUid,
-                ['title' => $siteTitle->getValue()]
-            );
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('pages');
+            $query = $connection->createQueryBuilder();
+            $query->getRestrictions()->removeAll();
+            $query->update('pages')
+                ->where('uid=' . $duplicatedPageUid)
+                ->set('title',  $siteTitle->getValue())
+                ->execute();
         }
     }
 
@@ -81,14 +94,14 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         $GLOBALS['BE_USER']->workspace = 0;
 
         $nodeData = new \stdClass();
-        $nodeData->serializeClassName = PagetreeNode::class;
+        $nodeData->serializeClassName = TreeNode::class;
         $nodeData->id = $nodeUid;
         $nodeData->type = 'pages';
 
-        /** @var PagetreeNode $node */
-        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
+        /** @var TreeNode $node */
+        $node = GeneralUtility::makeInstance(TreeNode::class, (array)$nodeData);
 
-        $duplicatedPageUid = Commands::copyNode($node, $destinationUid);
+        $duplicatedPageUid = PaetreeCommandsUtility::copyNode($node, $destinationUid);
 
         $GLOBALS['BE_USER'] = $beUserSave;
 

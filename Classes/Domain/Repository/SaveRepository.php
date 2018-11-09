@@ -34,8 +34,9 @@ class SaveRepository extends Repository
     /**
      * Returns the last record for a given root page uid.
      *
-     * @param    int $rootPageUid The root page uid.
-     * @return array|QueryResultInterface
+     * @param $rootPageUid
+     * @return array|mixed|null|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
      */
     public function findLastByRootPageUid($rootPageUid)
     {
@@ -79,9 +80,11 @@ class SaveRepository extends Repository
     }
 
     /**
+     *
      * Creates a new "Save" record and add it to current persistence.
      *
-     * @param    Save $save The save instance.
+     * @param Save $save
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function createSave(Save $save)
     {

@@ -108,8 +108,9 @@
 	padding: 10px;
 	text-align: center;
 	overflow-x: hidden;
-	height: 350px;
-	max-height: 350px;
+	height: 100%;
+	/*height: 350px;
+	max-height: 350px;*/
 }
 .duplicated-sites-list .col .content:hover {
 	background-color: rgb(248, 248, 248);
@@ -409,12 +410,64 @@
 	min-width: 200px;
 }
 
+.form-control {
+	color: #000;
+}
+
 .form-control-feedback.factory-tooltip-disabled {
 	display: none;
 }
 
 .control-label {
 	white-space: nowrap;
+}
+
+.form-horizontal .control-label {
+	white-space: normal;
+	text-align: left;
+	float: none;
+	width: 100%;
+}
+.form-horizontal .control-label .form-control-feedback {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	height: auto;
+	line-height: normal;
+	padding: 10px 0;
+	position: static;
+	text-align: left;
+	white-space: normal;
+	width: 100%;
+}
+.form-horizontal .control-label .form-control-feedback:before {
+	display: none;
+}
+
+.form-group.has-feedback .form-label {
+	white-space: normal;
+}
+
+.form-horizontal .control-label {
+	white-space: normal;
+	text-align: left;
+	float: none;
+	width: 100%;
+}
+.form-horizontal .control-label .form-control-feedback {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	height: auto;
+	line-height: normal;
+	padding: 10px 0;
+	position: static;
+	text-align: left;
+	white-space: normal;
+	width: 100%;
+}
+.form-horizontal .control-label .form-control-feedback:before {
+	display: none;
+}
+
+.form-group.has-feedback .form-label {
+	white-space: normal;
 }
 
 .site-duplication .title-error, .site-duplication .title-success {
@@ -443,4 +496,8 @@
 /* Overrides TYPO3 7 new CSS */
 .form-group.has-error label:before {
 	display: none;
+}
+
+ul.typo3-messages {
+	list-style-type: none;
 }

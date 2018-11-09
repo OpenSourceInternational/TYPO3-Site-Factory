@@ -140,8 +140,9 @@ class TypoScriptUtility
      * Generates a TemplateService from a given page uid, by running through
      * the pages root line.
      *
-     * @param    int|null|bool $pageUid The uid of the page you want the TypoScript configuration from. If "null" is given, only the static configuration is returned.
-     * @return    TemplateService
+     * @param null $pageUid
+     * @return TemplateService
+     * @throws \Exception
      */
     private static function generateConfiguration($pageUid = null)
     {

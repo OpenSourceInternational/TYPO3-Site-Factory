@@ -23,6 +23,16 @@ namespace Romm\SiteFactory\Form\Fields;
 class ImageUploadPickerField extends AbstractField
 {
 
+    /**
+     * Array containing paths to partials that should be displayed only one
+     * time. For example, if you want a JavaScript's HTML template, it should
+     * be imported once, even if two fields of the same type are created.
+     *
+     * @var array
+     * @fill
+     */
+    protected $partialsHeader = ['Form/Fields/Header/ImageUploadHeader'];
+
     /** @var mixed The field type of the field : text, checkbox, select, etc.. */
     protected $fieldType = AbstractField::FIELD_TYPE_HIDDEN;
 

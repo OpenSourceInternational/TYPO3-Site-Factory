@@ -16,6 +16,9 @@ namespace Romm\SiteFactory\Utility;
 use Romm\SiteFactory\Core\Core;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
 /**
  * Class containing main functions to get/set a page's constants that match this
@@ -57,13 +60,14 @@ class ConstantManagerUtility
         $currentConstantsString = preg_replace('/' . self::CODE_DELIMITER_BEGIN . '.*' . self::CODE_DELIMITER_END . '/s', '', $currentConstantsString);
         $currentConstantsString .= CRLF . $constantsString;
 
-        Core::getDatabase()->exec_UPDATEquery(
-            'sys_template',
-            'uid=' . $template['uid'],
-            [
-                'constants' => $currentConstantsString
-            ]
-        );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_template');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->update('sys_template')
+            ->where('uid=' . $template['uid'])
+            ->set('constants',  $currentConstantsString)
+            ->execute();
     }
 
     /**
@@ -170,15 +174,18 @@ class ConstantManagerUtility
     public static function createPageTemplateIfNone($pageUid)
     {
         if (self::getPageTemplate($pageUid) === false) {
-            Core::getDatabase()->exec_INSERTquery(
-                'sys_template',
-                [
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
+            $query = $connection->createQueryBuilder();
+            $query->getRestrictions()->removeAll();
+            $query->insert('sys_template')
+                ->values([
                     'pid'    => intval($pageUid),
                     'title'  => 'Site Factory Template',
                     'tstamp' => time(),
                     'crdate' => time(),
-                ]
-            );
+                ])->execute();
+
         }
     }
 

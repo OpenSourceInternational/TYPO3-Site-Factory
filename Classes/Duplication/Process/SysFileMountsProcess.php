@@ -88,7 +88,7 @@ class SysFileMountsProcess extends AbstractDuplicationProcess
             ? $pathFirstPart
             : $pathFirstPart . '/';
 
-        $folderPath = $pathFirstPart . GeneralUtility::strtolower($siteTitle);
+        $folderPath = $pathFirstPart . strtolower($siteTitle);
         $folderPath = Core::formatAccentsInString($folderPath);
         $folderPath = preg_replace('/\s+/', ' ', $folderPath);
         $folderPath = preg_replace('/\s/', '_', $folderPath);

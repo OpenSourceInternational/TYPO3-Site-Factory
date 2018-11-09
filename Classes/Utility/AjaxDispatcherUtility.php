@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -233,10 +232,12 @@ class AjaxDispatcherUtility
     }
 
     /**
-     * Run a user function call. See documentation for more information.
      *
-     * @param    array $arguments Array containing the request arguments.
-     * @return    string    The result of the user function.
+     *  Run a user function call. See documentation for more information.
+     *
+     * @param $arguments
+     * @return string
+     * @throws \TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException
      */
     private function callUserFunction($arguments)
     {
@@ -275,11 +276,13 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Calls a TypoScript content object.
      *
-     * @param    array $configuration The configuration of the object.
-     * @param    array $arguments     The arguments passed to the content object.
-     * @return    string    The result of the content object.
+     * @param $configuration
+     * @param array $arguments
+     * @return string
+     * @throws \TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException
      */
     private function callContentObject($configuration, $arguments = [])
     {
@@ -298,10 +301,13 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Initializes the $GLOBALS['TSFE'] var, useful everywhere when in a
      * Frontend context.
      *
-     * @param int $id The id of the rootPage from which you want the controller to be based on.
+     * @param $id
+     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
      */
     private function initializeTSFE($id)
     {
@@ -349,10 +355,13 @@ class AjaxDispatcherUtility
     }
 
     /**
+     *
      * Returns the TypoScript configuration of a given page as an array.
      *
-     * @param    int $uid The uid of the page you want the TypoScript configuration from. If none given, the full configuration is returned.
-     * @return    array    The page configuration.
+     * @param int $uid
+     * @return array
+     * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public static function getPageConfiguration($uid = 0)
     {
@@ -439,7 +448,7 @@ class AjaxDispatcherUtility
         $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = __CLASS__ . '->runFrontendAjaxDispatcher';
 
         if (TYPO3_MODE == 'BE' && $backend) {
-            ExtensionManagementUtility::registerAjaxHandler($name, __CLASS__ . '->run');
+//            ExtensionManagementUtility::registerAjaxHandler($name, __CLASS__ . '->run');
         }
         if (TYPO3_MODE == 'FE' && $frontend) {
             $TYPO3_CONF_VARS['FE']['eID_include'][$name] = __FILE__;

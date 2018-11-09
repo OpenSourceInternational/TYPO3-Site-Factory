@@ -15,6 +15,7 @@ namespace Romm\SiteFactory\ViewHelpers\Be;
 
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * ViewHelper to include CSS or JavaScript assets.
@@ -23,42 +24,35 @@ class ImportAssetViewHelper extends AbstractBackendViewHelper
 {
 
     /**
-     * Includes the given CSS or JavaScript files.
-     *
-     * @param    array $cssFiles CSS files.
-     * @param    array $jsFiles  JavaScript files.
+     * @return void
      */
-    public function render($cssFiles = [], $jsFiles = [])
+    public function initializeArguments()
     {
-        $pageRenderer = (version_compare(TYPO3_version, '7.0', '<'))
-            ? $this->getDocInstance()->getPageRenderer()
-            : $this->getPageRenderer();
-
-        foreach ($cssFiles as $value) {
-            $path = $this->getFileRealPath($value);
-            $pageRenderer->addCssFile($path);
-        }
-
-        foreach ($jsFiles as $value) {
-            $path = $this->getFileRealPath($value);
-            $pageRenderer->addJsLibrary($path, $path);
-        }
+        parent::initializeArguments();
+        $this->registerArgument('cssFiles', 'array', 'array of css files', false);
+        $this->registerArgument('jsFiles', 'array', 'array of js files', false);
     }
 
     /**
-     * Returns a file path correct value by finding the 'EXT:xxx' values.
-     *
-     * @param    string $path The path to the file.
-     * @return    string            The correct path;
+     * Includes the given CSS or JavaScript files.
      */
-    private function getFileRealPath($path)
+    public function render()
     {
-        if (preg_match('/^EXT:([^\/]*)\/(.*)$/', $path, $res)) {
-            $extRelPath = ExtensionManagementUtility::extRelPath($res[1]);
-            $path = str_replace('EXT:' . $res[1] . '/', $extRelPath, $path);
+        $cssFiles = $this->arguments['cssFiles'];
+        $jsFiles = $this->arguments['jsFiles'];
+
+        $pageRenderer = $this->getPageRenderer();
+
+        if (is_array($cssFiles)) {
+            foreach ($cssFiles as $value) {
+                $pageRenderer->addCssFile($value);
+            }
         }
 
-        return $path;
+        if (is_array($jsFiles)) {
+            foreach ($jsFiles as $value) {
+                $pageRenderer->addJsLibrary($value, $value);
+            }
+        }
     }
-
 }

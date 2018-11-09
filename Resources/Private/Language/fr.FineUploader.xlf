@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-04-01T09:45:06Z" product-name="site_factory">
+		<header/>
+		<body>
+
+			<trans-unit id="fine_uploader.title.message">
+				<source>Upload message</source>
+				<target>Message d'envoi</target>
+			</trans-unit>
+
+			<trans-unit id="fine_uploader.label.drop_files_here">
+				<source>Drop files here</source>
+				<target>Déposez votre fichier ici</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.label.select_file">
+				<source>Select file</source>
+				<target>Sélectionnez un fichier</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.label.processing_files">
+				<source>Processing dropped files…</source>
+				<target>Tartement du fichier déposé…</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.label.retry">
+				<source>Retry</source>
+				<target>Recommencer</target>
+			</trans-unit>
+
+			<trans-unit id="fine_uploader.message.emptyError">
+				<source>{file} is empty, please select files again without it.</source>
+				<target>{file} est videy, merci de sélectionner un autre fichier.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.maxHeightImageError">
+				<source>Image is too tall.</source>
+				<target>L'image est trop grande.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.maxWidthImageError">
+				<source>Image is too wide.</source>
+				<target>L'image est trop large.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.minHeightImageError">
+				<source>Image is not tall enough.</source>
+				<target>L'image n'est pas assez grande.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.minWidthImageError">
+				<source>Image is not wide enough.</source>
+				<target>L'image n'est pas assez large.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.minSizeError">
+				<source>{file} is too small, minimum file size is {minSizeLimit}.</source>
+				<target>{file} est trop petite, la taille minimum est {minSizeLimit}.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.noFilesError">
+				<source>No files to upload.</source>
+				<target>Pas de fichier à envoyer.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.onLeave">
+				<source>The files are being uploaded, if you leave now the upload will be canceled.</source>
+				<target>Fichiers en cours de transfert, si vous quittez l'envoi sera interrompu.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.retryFailTooManyItemsError">
+				<source>Retry failed - you have reached your file limit.</source>
+				<target>Envoi échoué - vous avez atteint votre limite de fichiers.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.sizeError">
+				<source>{file} is too large, maximum file size is {sizeLimit}.</source>
+				<target>{file} est trop grande, la taille maximum est de {sizeLimit}.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.tooManyItemsError">
+				<source>Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.</source>
+				<target>Trop d'éléments ({netItems}) doivent être envoyés. La limite est de {itemLimit}.</target>
+			</trans-unit>
+			<trans-unit id="fine_uploader.message.typeError">
+				<source>{file} est un type de fichier invalide. Les extensions valides sont : {extensions}.</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

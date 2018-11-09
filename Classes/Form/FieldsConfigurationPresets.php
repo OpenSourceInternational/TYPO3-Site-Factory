@@ -17,6 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Core\Core;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class containing custom user functions for fields' TypoScript configuration.
@@ -33,7 +34,16 @@ class FieldsConfigurationPresets
     {
         $modelSitesPid = Core::getExtensionConfiguration('modelSitesPid');
 
-        $aModelSites = BackendUtility::getRecordsByField('pages', 'pid', $modelSitesPid);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid, title')
+            ->from('pages')
+            ->where('deleted=0 AND pid=' . $modelSitesPid);
+        $aModelSites = $query->execute()->fetchAll();
+
+
         $orderedModelSites = [];
 
         if (is_array($aModelSites)) {

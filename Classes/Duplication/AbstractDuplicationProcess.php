@@ -14,8 +14,6 @@
 namespace Romm\SiteFactory\Duplication;
 
 use Romm\SiteFactory\Form\Fields\AbstractField;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Core\Core;
@@ -23,6 +21,7 @@ use Romm\SiteFactory\Form\Fields\Field;
 use Romm\SiteFactory\Utility\TypoScriptUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class containing functions called when a site is being duplicated.
@@ -35,9 +34,6 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
 
     /** @var ObjectManager */
     protected $objectManager;
-
-    /** @var DatabaseConnection */
-    protected $database;
 
     /**
      * The configuration of the extension.
@@ -72,16 +68,15 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
     private $modelPageUid = null;
 
     /**
-     * Construction function.
-     *
+     * AbstractDuplicationProcess constructor.
      * @param array $duplicationData
      * @param array $duplicationSettings
      * @param array $fieldsValues
+     * @throws \Exception
      */
     public function __construct(array $duplicationData = [], array $duplicationSettings = [], $fieldsValues = [])
     {
         $this->objectManager = Core::getObjectManager();
-        $this->database = Core::getDatabase();
         $this->extensionConfiguration = Core::getExtensionConfiguration();
         $this->result = $this->objectManager->get(Result::class);
 
@@ -365,18 +360,10 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
     }
 
     /**
-     * Checks if the current request is called via Ajax.
+     * TODO : Checks if the current request is called via Ajax.
      *
      * @return bool
      */
-    public function checkAjaxCall()
-    {
-        if ($GLOBALS['ajaxObj'] instanceof AjaxRequestHandler) {
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * This function is only here to help getting the model page's uid and
@@ -393,7 +380,16 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
             if (!$modelPageUid) {
                 $flag = false;
             } else {
-                $testModelPageUid = $this->database->exec_SELECTgetSingleRow('uid', 'pages', 'deleted=0 AND uid=' . $modelPageUid);
+
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('pages');
+                $query = $connection->createQueryBuilder();
+                $query->getRestrictions()->removeAll();
+                $query->addSelectLiteral('uid')
+                    ->from('pages')
+                    ->where('deleted=0 AND uid=' . $modelPageUid);
+                $testModelPageUid = $query->execute()->fetchAll();
+
                 if ($testModelPageUid === false) {
                     $flag = false;
                 }
@@ -432,7 +428,16 @@ abstract class AbstractDuplicationProcess implements DuplicationProcessInterface
             if (!$duplicatedPageUid) {
                 $flag = false;
             } else {
-                $testDuplicatedPageUid = $this->database->exec_SELECTgetSingleRow('uid', 'pages', 'deleted=0 AND uid=' . $duplicatedPageUid);
+
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('pages');
+                $query = $connection->createQueryBuilder();
+                $query->getRestrictions()->removeAll();
+                $query->addSelectLiteral('uid')
+                    ->from('pages')
+                    ->where('deleted=0 AND uid=' . $duplicatedPageUid);
+                $testDuplicatedPageUid = $query->execute()->fetch();
+                $testDuplicatedPageUid = $testDuplicatedPageUid['uid'];
                 if ($testDuplicatedPageUid === false) {
                     $flag = false;
                 }

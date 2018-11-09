@@ -32,13 +32,17 @@ class ExtensionManagerUtility
     {
         $html = '<select name="' . $options['fieldName'] . '">';
 
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_groups');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid, title')
+            ->from('be_groups')
+            ->where('1=1');
+        $result = $query->execute()->fetchAll();
+
         $backendUserGroups = GeneralUtility::array_merge(
             [0 => ['uid' => -1, 'title' => '']],
-            Core::getDatabase()->exec_SELECTgetRows(
-                'uid, title',
-                'be_groups',
-                '1=1'
-            )
+            $result
         );
 
         foreach ($backendUserGroups as $group) {
@@ -63,13 +67,17 @@ class ExtensionManagerUtility
     {
         $html = '<select name="' . $options['fieldName'] . '">';
 
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid, username')
+            ->from('be_users')
+            ->where('1=1');
+        $result = $query->execute()->fetchAll();
+
         $backendUserGroups = GeneralUtility::array_merge(
             [0 => ['uid' => -1, 'title' => '']],
-            Core::getDatabase()->exec_SELECTgetRows(
-                'uid, username',
-                'be_users',
-                '1=1'
-            )
+            $result
         );
 
         foreach ($backendUserGroups as $group) {
