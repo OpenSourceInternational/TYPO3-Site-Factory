@@ -26,8 +26,8 @@ use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 // TODO: explain arguments: serialized: true
 
@@ -372,9 +372,7 @@ class AjaxDispatcherUtility
         $typoScriptService = $objectManager->get(TypoScriptService::class);
 
         if ($uid && MathUtility::canBeInterpretedAsInteger($uid) && $uid > 0) {
-            /** @var PageRepository $pageRepository */
-            $pageRepository = $objectManager->get(PageRepository::class);
-            $rootLine = $pageRepository->getRootLine($uid);
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $uid)->get();
 
             /** @var TemplateService $templateService */
             $templateService = $objectManager->get(TemplateService::class);
