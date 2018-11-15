@@ -339,7 +339,7 @@ class Core
         /** @var DocumentTemplate $documentTemplate */
         $documentTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $pageRenderer = $documentTemplate->getPageRenderer();
-        $pageRenderer->loadJquery();
+        $pageRenderer->addJsLibrary('JQuery 2.2.4', 'EXT:site_factory/Resources/Public/JavaScript/SiteFactory.JQuery.js');
     }
 
     /**
