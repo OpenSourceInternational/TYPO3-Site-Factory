@@ -202,7 +202,8 @@ class PaetreeCommandsUtility
             return '';
         }
         if (self::$useNavTitle === NULL) {
-            self::$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+            $tsConfug = self::getCurrentUserTsConfug();
+            self::$useNavTitle = $tsConfug['options.']['pageTree.']['showNavTitle'];
         }
         $rootline = array_reverse(\TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($uid));
         array_shift($rootline);
@@ -255,10 +256,11 @@ class PaetreeCommandsUtility
      */
     static public function getNewNode($record, $mountPoint = 0) {
         if (self::$titleLength === NULL) {
-            self::$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-            self::$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-            self::$addDomainName = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
-            self::$backgroundColors = $GLOBALS['BE_USER']->getTSConfigProp('options.pageTree.backgroundColor');
+            $tsConfug = self::getCurrentUserTsConfug();
+            self::$useNavTitle = $tsConfug['options.']['pageTree.']['showNavTitle'];
+            self::$addIdAsPrefix = $tsConfug['options.']['pageTree.']['showPageIdWithTitle'];
+            self::$addDomainName = $tsConfug['options.']['pageTree.']['showDomainNameWithTitle'];
+            self::$backgroundColors = $tsConfug['options.']['pageTree.']['backgroundColor'];
             self::$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
         }
         /** @var $subNode \TYPO3\CMS\Backend\Tree\TreeNode */
@@ -315,5 +317,22 @@ class PaetreeCommandsUtility
             $subNode->setDraggable(FALSE);
         }
         return $subNode;
+    }
+
+    /**
+     * @return mixed
+     */
+    static private function getCurrentUserTsConfug()
+    {
+        $backendUserAuthentication = self::getBackendUserAuthentication();
+        return $backendUserAuthentication->getTSConfig();
+    }
+
+    /**
+     * @return mixed
+     */
+    static private function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

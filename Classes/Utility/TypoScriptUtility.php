@@ -20,7 +20,8 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Handles the TypoScript configuration's construction of the extension.
@@ -151,9 +152,7 @@ class TypoScriptUtility
 
             $rootLine = null;
             if ($pageUid && MathUtility::canBeInterpretedAsInteger($pageUid) && $pageUid > 0) {
-                /** @var PageRepository $pageRepository */
-                $pageRepository = $objectManager->get(PageRepository::class);
-                $rootLine = $pageRepository->getRootLine($pageUid);
+                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
             }
 
             /** @var ExtendedTemplateService $templateService */

@@ -26,8 +26,8 @@ use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Frontend\Utility\EidUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 // TODO: explain arguments: serialized: true
 
@@ -127,11 +127,6 @@ class AjaxDispatcherUtility
 
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        // Bootstrap initialization.
-        Bootstrap::getInstance()
-            ->initializeTypo3DbGlobal()
-            ->applyAdditionalConfigurationSettings()
-            ->initializeBackendUser();
 
         // Gets the Ajax call parameters.
         $arguments = GeneralUtility::_GP('request');
@@ -139,7 +134,7 @@ class AjaxDispatcherUtility
         // Checking if the real arguments are serialized.
         if (is_array($arguments) && array_key_exists('arguments', $arguments)) {
             if (array_key_exists('serialized', $arguments['arguments']) && array_key_exists('value', $arguments['arguments'])) {
-                $arguments['arguments'] = GeneralUtility::explodeUrl2Array($arguments['arguments']['value'], true);
+                $arguments['arguments'] = GeneralUtility::explodeUrl2Array($arguments['arguments']['value']);
             }
         }
 
@@ -149,10 +144,6 @@ class AjaxDispatcherUtility
         if (TYPO3_MODE == 'FE') {
             // Creating global time tracker.
             $GLOBALS['TT'] = $this->objectManager->get(TimeTracker::class);
-
-            $this->initializeTSFE($id);
-        } else {
-            Bootstrap::getInstance()->loadExtensionTables();
         }
 
         // If the argument "mvc" is sent, then we should be able to call a controller.
@@ -170,13 +161,9 @@ class AjaxDispatcherUtility
             $content = $this->callTypoScriptLibrary($arguments, $id);
         }
 
-        if (TYPO3_MODE == 'FE') {
-            $content = $this->manageInternalObjects($content);
-        }
-
         // Display the final content on screen.
-        echo $content;
-        die();
+        $response = new HtmlResponse($content);
+        return $response;
     }
 
     /**
@@ -301,36 +288,6 @@ class AjaxDispatcherUtility
     }
 
     /**
-     *
-     * Initializes the $GLOBALS['TSFE'] var, useful everywhere when in a
-     * Frontend context.
-     *
-     * @param $id
-     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
-     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
-     */
-    private function initializeTSFE($id)
-    {
-        if (TYPO3_MODE == 'FE') {
-            $frontendController = $this->getFrontendController($id);
-            EidUtility::initLanguage();
-            EidUtility::initTCA();
-
-            // No Cache for Ajax stuff.
-            $frontendController->set_no_cache();
-
-            $frontendController->initFEuser();
-            $frontendController->checkAlternativeIdMethods();
-            $frontendController->determineId();
-            $frontendController->initTemplate();
-            $frontendController->getPageAndRootline();
-            $frontendController->getConfigArray();
-            $frontendController->connectToDB();
-            $frontendController->settingLanguage();
-        }
-    }
-
-    /**
      * @param    int $id The id of the rootPage from which you want the controller to be based on.
      * @return TypoScriptFrontendController
      */
@@ -372,9 +329,7 @@ class AjaxDispatcherUtility
         $typoScriptService = $objectManager->get(TypoScriptService::class);
 
         if ($uid && MathUtility::canBeInterpretedAsInteger($uid) && $uid > 0) {
-            /** @var PageRepository $pageRepository */
-            $pageRepository = $objectManager->get(PageRepository::class);
-            $rootLine = $pageRepository->getRootLine($uid);
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $uid)->get();
 
             /** @var TemplateService $templateService */
             $templateService = $objectManager->get(TemplateService::class);
@@ -398,28 +353,6 @@ class AjaxDispatcherUtility
         return $fullConfiguration;
     }
 
-    /**
-     * Tricky function which will manage the internal objects (USER_INT), which
-     * are defined as token string. The function will analyze the content, find
-     * possible internal objects tokens and convert them to the real content.
-     *
-     * @param    string $content The current content.
-     * @return    string    The final content.
-     */
-    private function manageInternalObjects($content)
-    {
-        if (TYPO3_MODE == 'FE') {
-            $frontendController = $this->getFrontendController();
-
-            if ($frontendController->config['INTincScript']) {
-                $frontendController->content = $content;
-                $frontendController->INTincScript();
-                $content = $frontendController->content;
-            }
-        }
-
-        return $content;
-    }
 
     /**
      * Activates the Ajax Dispatcher.
