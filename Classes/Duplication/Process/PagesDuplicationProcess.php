@@ -103,6 +103,14 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
 
         $duplicatedPageUid = PaetreeCommandsUtility::copyNode($node, $destinationUid);
 
+        //emable copied node
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->update('pages')
+            ->where($queryBuilder->expr()->eq('uid', (int)$duplicatedPageUid))
+            ->set('hidden', 0)
+            ->execute();
+
         $GLOBALS['BE_USER'] = $beUserSave;
 
         return $duplicatedPageUid;

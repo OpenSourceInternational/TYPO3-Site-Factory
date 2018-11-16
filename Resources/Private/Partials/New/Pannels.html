@@ -1,3 +1,4 @@
+<v:variable.set name="configurations" value="disabled"/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<a data-toggle="collapse" href="#collapse-settings">
@@ -15,11 +16,13 @@
 						<f:if condition="{field.hideInSiteModification}">
 							<f:else>
 								<f:render partial="New/FieldBody" arguments="{_all}" />
+								<v:variable.set name="configurations" value=""/>
 							</f:else>
 						</f:if>
 					</f:then>
 					<f:else>
 						<f:render partial="New/FieldBody" arguments="{_all}" />
+						<v:variable.set name="configurations" value=""/>
 					</f:else>
 				</f:if>
 			</f:for>
@@ -29,7 +32,7 @@
 </div>
 
 <div class="submit-button">
-	<button class="btn btn-default btn-lg" onclick="window['{formId}'].submit('new');">
+	<button class="btn btn-default btn-lg" onclick="window['{formId}'].submit('new');" {configurations}>
 		<f:if condition="{modifySite}">
 			<f:then>
 				<f:translate key="form.submit_label_modification" />
