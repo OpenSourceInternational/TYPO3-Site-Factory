@@ -20,6 +20,10 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Duplication\AbstractDuplicationProcess;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 
 /**
  * Class containing functions called when a site is being duplicated.
@@ -63,5 +67,42 @@ class SaveSiteConfigurationProcess extends AbstractDuplicationProcess
             $saveRepository->update($saveObject);
         }
         $persistenceManager->persistAll();
+
+        // save site configuration in yaml
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+
+        $duplicatedPageUid = $this->getDuplicatedPageUid();
+        $modelPageUid = $this->getModelPageUid();
+
+        $modelSite = $siteFinder->getSiteByRootPageId($modelPageUid);
+        $modelSiteConfiguration = $modelSite->getConfiguration();
+
+        try {
+            $duplicatedSite = $siteFinder->getSiteByRootPageId($duplicatedPageUid);
+            $duplicatedSiteConfiguration = $duplicatedSite->getConfiguration();
+        } catch (SiteNotFoundException $e) {
+            $duplicatedSiteConfiguration = $modelSiteConfiguration;
+        }
+
+        $duplicatedSiteConfiguration['rootPageId'] = $duplicatedPageUid;
+
+        $siteConfigurationManager = GeneralUtility::makeInstance(
+            SiteConfiguration::class,
+            Environment::getConfigPath() . '/sites'
+        );
+
+        // error Handling pages association
+        $pagesUidAssociation = $this->getDuplicationData('pagesUidAssociation');
+        $errorHandling = $duplicatedSiteConfiguration['errorHandling'];
+        foreach ($errorHandling as $index => $value) {
+            if (isset($value['errorContentSource']) && isset($pagesUidAssociation[$value['errorContentSource']])) {
+                $value['errorContentSource'] = $pagesUidAssociation[$value['errorContentSource']];
+                $errorHandling[$index] = $value;
+            }
+        }
+        $duplicatedSiteConfiguration['errorHandling'] = $errorHandling;
+
+        $siteConfigurationManager->write($duplicatedPageUid, $duplicatedSiteConfiguration);
+
     }
 }
