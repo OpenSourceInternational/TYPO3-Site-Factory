@@ -16,14 +16,13 @@ namespace Romm\SiteFactory\Controller;
 use Romm\SiteFactory\Utility\AjaxInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 class AjaxController extends ActionController
 {
     public function dispatchAction()
     {
+        $response = new HtmlResponse('');
         $requestArguments = GeneralUtility::_GP('request');
         $result = [];
 
@@ -43,7 +42,8 @@ class AjaxController extends ActionController
             $result = json_encode($result);
         }
 
-        return $result;
+        $response->getBody()->write($result);
+        return $response;
     }
 
     public function dispatchUserFunction($requestArguments)
@@ -65,7 +65,7 @@ class AjaxController extends ActionController
     }
 
     public function dispatchControllerAction($requestArguments) {
-        $result = [];
+
         $extensionName = (true === isset($requestArguments['mvc']['extensionName']))
             ? $requestArguments['mvc']['extensionName']
             : null;
@@ -82,25 +82,11 @@ class AjaxController extends ActionController
             ? $requestArguments['arguments']
             : [];
 
-        if ($extensionName && $vendorName && $controllerName && $actionName) {
-            /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class);
-            $request->setControllerExtensionName($extensionName);
-            $request->setControllerVendorName($vendorName);
-            $request->setControllerName($controllerName);
-            $request->setControllerActionName($actionName);
-            $request->setArguments($arguments);
+        $controller = GeneralUtility::makeInstance($vendorName . '\\' . $extensionName .'\\Controller\\' . $controllerName.'Controller');
 
-            /** @var Response $response */
-            $response = GeneralUtility::makeInstance(Response::class);
-
-            /** @var Dispatcher $dispatcher */
-            $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-            $dispatcher->dispatch($request, $response);
-
-            $result = $response->getContent();
-        }
+        $result = call_user_func(array($controller, $actionName . 'Action'), $arguments['duplicationToken'], $arguments['index']);
 
         return $result;
+
     }
 }

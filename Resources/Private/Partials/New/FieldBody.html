@@ -8,12 +8,16 @@
 				<f:render
 						partial="Form/Tooltips/Question"
 						arguments="{label: field.hint, extraClasses: 'factory-tooltip-form-question', placement: 'top'}"
-						/>
+				/>
 			</f:if>
 		</div>
 	</label>
-	<div class="col-sm-9">
-		<div class="form-field{f:if(condition: '{field.validation}', then: ' is-evaluated')}" data-type="{field.lowerCaseType}" data-fieldtype="{field.lowerCaseFieldType}" data-name="{field.name}" data-label="{field.label->sf:addSlashes(onlyDoubleQuotes: 1)}">
+	<div class="col-sm-12">
+		<f:comment>
+			todo : check this
+			{field.label -> --sf:addSlashes(onlyDoubleQuotes: 1)}"
+		</f:comment>
+		<div class="form-field{f:if(condition: field.validation, then: ' is-evaluated')}" data-type="{field.lowerCaseType}" data-fieldtype="{field.lowerCaseFieldType}" data-name="{field.name}" data-label="{field.label -> sf:addSlashes()}">
 			<f:render partial="Form/Fields/{field.type}" arguments="{_all}" />
 		</div>
 
@@ -26,7 +30,7 @@
 							extraClasses: 'factory-tooltip-form-error',
 							placement: 'left'
 						}"
-						/>
+				/>
 				<f:image src="EXT:t3skin/images/spinner/big-f0f0f0.gif" class="form-evaluation-loading" />
 			</div>
 		</f:if>

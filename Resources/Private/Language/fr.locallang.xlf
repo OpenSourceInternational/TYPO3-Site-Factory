@@ -25,7 +25,7 @@
 			<!-- INDEX -->
 			<trans-unit id="index.header_title">
 				<source>Welcome in the Site Factory.</source>
-				<target>Bienvenu dans l'Usine à sites.</target>
+				<target>Bienvenue dans l'Usine à sites.</target>
 			</trans-unit>
 			<trans-unit id="index.global_description">
 				<source>This tool allows you to duplicate sites, among a list of pre-defined models. You can customize several parameters, like the name of the site, the logo, the background color, and others.</source>
@@ -92,6 +92,7 @@
 			</trans-unit>
 			<trans-unit id="form.submit_label_modification">
 				<source>Save modifications</source>
+				<target>Enregistrer les modifications</target>
 			</trans-unit>
 
 			<trans-unit id="form.prevent_window_closing">
@@ -129,16 +130,16 @@
 					Once the duplication done, the new site will be updated with the sent data.
 				]]>
 				</source>
-				<source><![CDATA[Remplissez le formulaire avec les informations souhaitées.<br />
+				<target><![CDATA[Remplissez le formulaire avec les informations souhaitées.<br />
 					Lorsque le formulaire est valide, vous pouvez lancer le processus de duplication.<br />
 					Une fois la duplication effectuée, le nouveau site sera mis à jour avec les informations envoyées.
 				]]>
-				</source>
+				</target>
 			</trans-unit>
 
 			<trans-unit id="form.static_menu.success_label">
 				<source>Everything's ok</source>
-				<source>Tout est ok</source>
+				<target>Tout est ok</target>
 			</trans-unit>
 			<trans-unit id="form.static_menu.success_text">
 				<source>You successfully filled the information. You can now launch the duplication process by clicking the save icon, which is located in the task bar at the top of the form:</source>
@@ -153,7 +154,7 @@
 			<!-- PRESET FORM FIELDS -->
 			<trans-unit id="form.field.label.model_site">
 				<source>Model site</source>
-				<source>Site modèle</source>
+				<target>Site modèle</target>
 			</trans-unit>
 			<trans-unit id="form.field.hint.model_site">
 				<source>The site which will be used as an example for the new site.</source>
@@ -162,7 +163,7 @@
 
 			<trans-unit id="form.field.label.site_name">
 				<source>Site's name</source>
-				<source>Nom du site</source>
+				<target>Nom du site</target>
 			</trans-unit>
 			<trans-unit id="form.field.hint.site_name">
 				<source>The name of the new site.</source>
@@ -175,7 +176,7 @@
 
 			<trans-unit id="form.field.label.domain_name">
 				<source>Domain name</source>
-				<source>Nom de domaine</source>
+				<target>Nom de domaine</target>
 			</trans-unit>
 			<trans-unit id="form.field.hint.domain_name">
 				<source>The domain name of the new site. Example : www.example.com</source>
@@ -184,7 +185,7 @@
 
 			<trans-unit id="form.field.label.backend_user_username">
 				<source>Backend user's name</source>
-				<source>Nom de l'utilisateur Backend</source>
+				<target>Nom de l'utilisateur Backend</target>
 			</trans-unit>
 			<trans-unit id="form.field.hint.backend_user_username">
 				<source>The name of the Backend user which will be duplicated.</source>
@@ -197,7 +198,7 @@
 			</trans-unit>
 			<trans-unit id="form.field.hint.page_backend_layout">
 				<source>The Backend layout which will be used for the root page.</source>
-				<source>La mise en page qui va être utilisée sur la page racine.</source>
+				<target>La mise en page qui va être utilisée sur la page racine.</target>
 			</trans-unit>
 
 			<trans-unit id="form.field.label.subpages_backend_layout">
@@ -206,7 +207,7 @@
 			</trans-unit>
 			<trans-unit id="form.field.hint.subpages_backend_layout">
 				<source>The Backend layout which will be used for the root page's subpages.</source>
-				<source>La mise en page qui va être utilisée sur les sous-pages de la page racine.</source>
+				<target>La mise en page qui va être utilisée sur les sous-pages de la page racine.</target>
 			</trans-unit>
 
 			<trans-unit id="form.field.label.background_color">
@@ -350,9 +351,17 @@
 				<source>New pages association…</source>
 				<target>Association des nouvelles pages…</target>
 			</trans-unit>
+			<trans-unit id="duplication_process.pages_association.notice.amount_pages">
+				<source>%d pages have been associated.</source>
+				<target>%d pages ont été associées.</target>
+			</trans-unit>
 			<trans-unit id="duplication_process.mount_point_creation">
 				<source>Mount point creation…</source>
 				<target>Création du point de montage…</target>
+			</trans-unit>
+			<trans-unit id="duplication_process.mount_point_creation.error.error_creation">
+				<source>The file mount could not be created.</source>
+				<target>Le point de montage n'a pas pu être créé.</target>
 			</trans-unit>
 			<trans-unit id="duplication_process.backend_usergroup_creation">
 				<source>Backend user group creation…</source>
@@ -365,6 +374,10 @@
 			<trans-unit id="duplication_process.uploaded_files">
 				<source>Files management…</source>
 				<target>Gestion des fichiers…</target>
+			</trans-unit>
+			<trans-unit id="duplication_process.uploaded_files.notice.success">
+				<source>The following file(s) have successfully been moved to "%s": %s.</source>
+				<target>Le ou les fichiers suivants ont été envoyés dans le dossier "%s": %s.</target>
 			</trans-unit>
 			<trans-unit id="duplication_process.link_to_page_media">
 				<source>Linking medias to pages…</source>

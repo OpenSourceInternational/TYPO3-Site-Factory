@@ -14,6 +14,8 @@
 namespace Romm\SiteFactory\Duplication\Process;
 
 use Romm\SiteFactory\Duplication\AbstractDuplicationProcess;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class containing functions called when a site is being duplicated.
@@ -62,21 +64,23 @@ class TreeUidAssociationProcess extends AbstractDuplicationProcess
     {
         $uidAssociation = [$oldUid => $newUid];
 
-        $oldChildren = $this->database->exec_SELECTgetRows(
-            'uid',
-            'pages',
-            'deleted=0 AND pid=' . $oldUid,
-            '',
-            'sorting ASC'
-        );
 
-        $newChildren = $this->database->exec_SELECTgetRows(
-            'uid',
-            'pages',
-            'deleted=0 AND pid=' . $newUid,
-            '',
-            'sorting ASC'
-        );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages');
+        $query = $connection->createQueryBuilder();
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid')
+            ->from('pages')
+            ->where( 'deleted=0 AND pid=' . $oldUid)
+            ->orderBy('sorting');
+        $oldChildren = $query->execute()->fetchAll();
+
+        $query->getRestrictions()->removeAll();
+        $query->addSelectLiteral('uid')
+            ->from('pages')
+            ->where( 'deleted=0 AND pid=' . $newUid)
+            ->orderBy('sorting');
+        $newChildren = $query->execute()->fetchAll();
 
         if (array_keys($oldChildren) == array_keys($newChildren)) {
             foreach ($oldChildren as $key => $oldChildUid) {

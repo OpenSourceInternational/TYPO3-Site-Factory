@@ -3,33 +3,36 @@
 	<file source-language="en" datatype="plaintext">
 		<header />
 		<body>
+
 			<trans-unit id="fields.validation.select.wrong_option_value">
 				<source>The value "%s" is not a correct.</source>
+				<target>La valeur "%s" est incorrecte.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.wrong_hexadecimal_value">
 				<source>The value "%s" does not match a hexadecimal value.</source>
+				<target>The value "%s" does not match a hexadecimal value.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.empty_value">
 				<source>This value is empty and must be filled.</source>
+				<target>Cette valeur est vide et doit être renseignée.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.domain_name_value">
 				<source>This value must match a domain name.</source>
+				<target>Cette valeur doit correspondre à un nom de domaine.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.facebook_url_value">
 				<source>This value must match a valid Facebook url.</source>
+				<target>Cette valeur doit être une URL Facebook valide.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.twitter_url_value">
 				<source>This value must match a valid Twitter url.</source>
+				<target>Cette valeur doit être une URL Twitter valide.</target>
 			</trans-unit>
 			<trans-unit id="fields.validation.integer_value">
 				<source>This value must be an integer.</source>
+				<target>Cette valeur doit être un nombre entier.</target>
 			</trans-unit>
-			<trans-unit id="fields.validation.domain_name_value">
-				<source>This value must match a domain name.</source>
-			</trans-unit>			
-			<trans-unit id="fields.validation.empty_select">
-				<source>You have to fill the select box.</source>
-			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

@@ -1,15 +1,15 @@
 {namespace sf=Romm\SiteFactory\ViewHelpers}
 
 <script type="text/template" id="qq-template-validation">
-	<div class="qq-uploader-selector qq-uploader" qq-drop-area-text="{f:translate(key: 'fine_uploader.label.drop_files_here')}">
+	<div class="qq-uploader-selector qq-uploader" qq-drop-area-text="{f:translate(key: 'LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.label.drop_files_here')}">
 		<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
 			<span class="qq-upload-drop-area-text-selector"></span>
 		</div>
 		<div class="qq-upload-button-selector btn btn-primary">
-			<span class="glyphicon glyphicon-file"></span>&nbsp;<f:translate key="fine_uploader.label.select_file" />
+			<span class="glyphicon glyphicon-file"></span>&nbsp;<f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.label.select_file" />
 		</div>
             <span class="qq-drop-processing-selector qq-drop-processing">
-                <span><f:translate key="fine_uploader.label.processi    ng_files" /></span>
+                <span><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.label.processing_files" /></span>
                 <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
             </span>
 
@@ -18,11 +18,11 @@
 		<dialog class="qq-alert-dialog-selector modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title"><f:translate key="fine_uploader.title.message" /></h4>
+					<h4 class="modal-title"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.title.message" /></h4>
 				</div>
 				<div class="modal-body qq-dialog-message-selector"></div>
 				<div class="modal-footer qq-dialog-buttons">
-					<span class="qq-cancel-button-selector btn btn-default"><f:translate key="LLL:EXT:lang/locallang_common.xlf:close" /></span>
+					<span class="qq-cancel-button-selector btn btn-default"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/locallang_common.xlf:close" /></span>
 				</div>
 			</div>
 		</dialog>
@@ -30,12 +30,12 @@
 		<dialog class="qq-confirm-dialog-selector modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title"><f:translate key="fine_uploader.title.message" /></h4>
+					<h4 class="modal-title"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.title.message" /></h4>
 				</div>
 				<div class="modal-body qq-dialog-message-selector"></div>
 				<div class="modal-footer qq-dialog-buttons">
-					<span class="qq-cancel-button-selector btn btn-danger"><f:translate key="LLL:EXT:lang/locallang_common.xlf:no" /></span>
-					<span class="qq-ok-button-selector btn btn-success"><f:translate key="LLL:EXT:lang/locallang_common.xlf:yes" /></span>
+					<span class="qq-cancel-button-selector btn btn-danger"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/locallang_common.xlf:no" /></span>
+					<span class="qq-ok-button-selector btn btn-success"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/locallang_common.xlf:yes" /></span>
 				</div>
 			</div>
 		</dialog>
@@ -43,13 +43,13 @@
 		<dialog class="qq-prompt-dialog-selector modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title"><f:translate key="fine_uploader.title.message" /></h4>
+					<h4 class="modal-title"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.title.message" /></h4>
 				</div>
 				<div class="modal-body qq-dialog-message-selector"></div>
 				<input type="text">
 				<div class="modal-footer qq-dialog-buttons">
-					<span class="qq-cancel-button-selector btn btn-danger"><f:translate key="LLL:EXT:lang/locallang_common.xlf:cancel" /></span>
-					<span class="qq-ok-button-selector btn btn-success"><f:translate key="LLL:EXT:lang/locallang_common.xlf:ok" /></span>
+					<span class="qq-cancel-button-selector btn btn-danger"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/locallang_common.xlf:cancel" /></span>
+					<span class="qq-ok-button-selector btn btn-success"><f:translate key="LLL:EXT:site_factory/Resources/Private/Language/locallang_common.xlf:ok" /></span>
 				</div>
 			</div>
 		</dialog>
@@ -58,18 +58,18 @@
 
 <script type="text/javascript">
 	SiteFactory.fineUploaderDefaultSettings = {messages: {}};
-	SiteFactory.fineUploaderDefaultSettings.messages.emptyError =                   '{f:translate(key: "fine_uploader.message.emptyError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.maxHeightImageError =          '{f:translate(key: "fine_uploader.message.maxHeightImageError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.maxWidthImageError =           '{f:translate(key: "fine_uploader.message.maxWidthImageError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.minHeightImageError =          '{f:translate(key: "fine_uploader.message.minHeightImageError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.minWidthImageError =           '{f:translate(key: "fine_uploader.message.minWidthImageError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.minSizeError =                 '{f:translate(key: "fine_uploader.message.minSizeError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.noFilesError =                 '{f:translate(key: "fine_uploader.message.noFilesError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.onLeave =                      '{f:translate(key: "fine_uploader.message.onLeave")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.retryFailTooManyItemsError =   '{f:translate(key: "fine_uploader.message.retryFailTooManyItemsError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.sizeError =                    '{f:translate(key: "fine_uploader.message.sizeError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.tooManyItemsError =            '{f:translate(key: "fine_uploader.message.tooManyItemsError")->sf:addSlashes()}';
-	SiteFactory.fineUploaderDefaultSettings.messages.typeError =                    '{f:translate(key: "fine_uploader.message.typeError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.emptyError =                   '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.emptyError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.maxHeightImageError =          '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.maxHeightImageError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.maxWidthImageError =           '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.maxWidthImageError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.minHeightImageError =          '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.minHeightImageError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.minWidthImageError =           '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.minWidthImageError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.minSizeError =                 '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.minSizeError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.noFilesError =                 '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.noFilesError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.onLeave =                      '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.onLeave")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.retryFailTooManyItemsError =   '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.retryFailTooManyItemsError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.sizeError =                    '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.sizeError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.tooManyItemsError =            '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.tooManyItemsError")->sf:addSlashes()}';
+	SiteFactory.fineUploaderDefaultSettings.messages.typeError =                    '{f:translate(key: "LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.message.typeError")->sf:addSlashes()}';
 </script>
 
 <f:section name="Items">
@@ -84,7 +84,7 @@
 				</div>
 				<div class="col-md-3">
 					<button class="qq-upload-retry-selector btn btn-success">
-						<span class="glyphicon glyphicon-refresh"></span>&nbsp;<f:translate key="fine_uploader.label.retry" />
+						<span class="glyphicon glyphicon-refresh"></span>&nbsp;<f:translate key="LLL:EXT:site_factory/Resources/Private/Language/FineUploader.xlf:fine_uploader.label.retry" />
 					</button>
 					<button class="qq-upload-cancel-selector btn btn-danger">
 						<span class="glyphicon glyphicon-remove"></span>&nbsp;<f:translate key="LLL:EXT:lang/locallang_common.xlf:cancel" />

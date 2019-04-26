@@ -3,7 +3,7 @@ SiteFactory.FineUploaderDefaultSettings = function() {
 	this.element = null;
 	this.formElement = null;
 	this.fieldName = '';
-
+    var ajaxUrl = TYPO3.settings.ajaxUrls['site_factory'];
 	// Validation settings for files.
 	this.validation = {
 		allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
@@ -22,7 +22,7 @@ SiteFactory.FineUploaderDefaultSettings = function() {
 
 	// TYPO3 request handler when a new file is added.
 	this.request = {
-		endpoint:       SiteFactory.ajaxUrl,
+		endpoint:       ajaxUrl,
 		paramsInBody:   false,
 		params: {
 			//ajaxID:		'ajaxDispatcher',
@@ -34,7 +34,7 @@ SiteFactory.FineUploaderDefaultSettings = function() {
 
 	// Request managing the already existing files for a field.
 	this.session = {
-		endpoint:       SiteFactory.ajaxUrl,
+		endpoint:       ajaxUrl,
 		params: {
 			//ajaxID:		'ajaxDispatcher',
 			request: {
@@ -48,7 +48,7 @@ SiteFactory.FineUploaderDefaultSettings = function() {
 	this.deleteFile = {
 		enabled:		true,
 		forceConfirm:	true,
-		endpoint:		SiteFactory.ajaxUrl + '&dummy='
+		endpoint:		ajaxUrl + '&dummy='
 	};
 
 	// Paths to the thumbnails.

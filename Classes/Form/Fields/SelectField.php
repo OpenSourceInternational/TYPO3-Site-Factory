@@ -72,7 +72,11 @@ class SelectField extends AbstractField
     {
         if (!is_array($this->options)) {
             $params = [];
-            $options = GeneralUtility::callUserFunction($this->options, $params, $this);
+            if ($this->options) {
+                $options = GeneralUtility::callUserFunction($this->options, $params, $this);
+            } else {
+                $options = [];
+            }
             if ($options) {
                 $this->options = (array)$options;
             }

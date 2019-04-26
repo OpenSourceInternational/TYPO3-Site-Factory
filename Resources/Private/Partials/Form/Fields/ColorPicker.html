@@ -12,7 +12,7 @@
 		<f:render partial="Form/Field" arguments="{field: field}" />
 	</div>
 	<div class="color-picker-preview color-picker-preview-alone">
-		<span class="color-picker-preview-cube" style="background-color: {f:if(condition: field.hasValue, then: field.value, else: white)};"></span>
+		<span class="color-picker-preview-cube" style="background-color: {f:if(condition: field.hasValue, then: field.value, else: field.defaultValue)};"></span>
 	</div>
 	<div class="color-picker-icon">
 		<a href="#" onclick="window.open('../typo3conf/ext/site_factory/Resources/Public/Contrib/hailpixel-color-picker/index.htm?field={field.name}&formId={formId}', '', config='height=400, width=400')">

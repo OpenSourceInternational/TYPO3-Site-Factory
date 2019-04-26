@@ -23,11 +23,20 @@ class ErrorMessageViewHelper extends AbstractBackendViewHelper
 {
 
     /**
-     * @param    array $errors Error messages.
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('errors', 'array', ' Error messages.', false);
+    }
+
+    /**
      * @return    string
      */
-    public function render($errors = [])
+    public function render()
     {
+        $errors = $this->arguments['errors'];
         $result = '';
 
         if (is_array($errors)) {

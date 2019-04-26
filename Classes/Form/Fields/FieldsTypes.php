@@ -51,11 +51,13 @@ class FieldsTypes
     }
 
     /**
+     *
      * Returns the different fields types names, based on the TypoScript
      * configuration of a given page.
      *
-     * @param $pageUid    int    The id of the page you want the fields types of.
-     * @return array    The fields types names.
+     * @param $pageUid
+     * @return array
+     * @throws \Exception
      */
     public static function getFieldsTypes($pageUid)
     {

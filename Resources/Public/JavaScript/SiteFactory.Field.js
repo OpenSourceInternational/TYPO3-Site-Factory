@@ -63,10 +63,10 @@ SiteFactory.Field = function(formElement, fieldElement) {
 					localField.formElement.menu.refreshErrorsMenu();
 			}
 		};
-
+        var ajaxUrl = TYPO3.settings.ajaxUrls['site_factory'];
 		jQuery.ajax({
 			async:		'true',
-			url:		SiteFactory.ajaxUrl,
+			url:		ajaxUrl,
 			type:		'GET',
 			dataType:	'html',
 			data: {

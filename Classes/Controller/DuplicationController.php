@@ -21,6 +21,7 @@ use Romm\SiteFactory\Core\CacheManager;
 use Romm\SiteFactory\Core\Core;
 use Romm\SiteFactory\Duplication\AbstractDuplicationProcess;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Controller managing the duplication of sites.
@@ -34,16 +35,26 @@ class DuplicationController extends AbstractController
      *
      * See "processDuplication" function for more details.
      *
-     * @return bool
+     * @param null $cacheToken
+     * @param null $index
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function ajaxProcessDuplicationAction()
+    public function ajaxProcessDuplicationAction($cacheToken = null, $index = null)
     {
-        // @todo: check if token is valid
-        $cacheToken = $this->request->getArgument('duplicationToken');
+        $result = [];
+        if($this->request){
+            // @todo: check if token is valid
+            if($this->request->getArgument('duplicationToken')){
+                $cacheToken = $this->request->getArgument('duplicationToken');
+            }
 
-        // @todo: check if index is valid
-        $index = $this->request->getArgument('index');
 
+            // @todo: check if index is valid
+            if($this->request->getArgument('index')){
+                $index = $this->request->getArgument('index');
+            }
+        }
         $result = $this->processDuplication($cacheToken, $index, true);
 
         $this->view = null;
@@ -69,7 +80,8 @@ class DuplicationController extends AbstractController
         $cacheData = json_decode($cacheData, true);
 
         /** @var Result $result */
-        $result = $this->objectManager->get(Result::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $result = $objectManager->get(Result::class);
 
         try {
             if (isset($cacheData['duplicationData']['modelPageUid']) && MathUtility::canBeInterpretedAsInteger($cacheData['duplicationData']['modelPageUid']) && $cacheData['duplicationData']['modelPageUid'] > 0) {
@@ -88,19 +100,16 @@ class DuplicationController extends AbstractController
                         /** @var AbstractDuplicationProcess $class */
                         $class = GeneralUtility::makeInstance($class, $cacheData['duplicationData'], $settings, $cacheData['fieldsValues']);
                         if ($class instanceof AbstractDuplicationProcess) {
-                            // @todo : else
-//                            if (!$checkAjax || ($checkAjax && $class->checkAjaxCall())) {
-                                $class->run();
-                                $fieldsValues = $class->getFieldsValues();
-                                $result->merge($class->getResult());
+                            $class->run();
+                            $fieldsValues = $class->getFieldsValues();
+                            $result->merge($class->getResult());
 
-                                // Saving modified data in cache.
-                                $configuration = [
-                                    'duplicationData' => $class->getDuplicationData(),
-                                    'fieldsValues'    => $fieldsValues
-                                ];
-                                $cache->set($cacheToken, json_encode($configuration));
-//                            }
+                            // Saving modified data in cache.
+                            $configuration = [
+                                'duplicationData' => $class->getDuplicationData(),
+                                'fieldsValues'    => $fieldsValues
+                            ];
+                            $cache->set($cacheToken, json_encode($configuration));
                         } else {
                             throw new \Exception('The class "' . $class . '" must extend "' . AbstractDuplicationProcess::class . '".', 1422887215);
                         }
