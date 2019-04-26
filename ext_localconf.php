@@ -19,7 +19,7 @@ call_user_func(
                 'backend'  => 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend',
                 'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
                 'options'  => [
-                    'cacheDirectory' => Romm\SiteFactory\Core\Core::getProcessedFolderPath()
+                    'cacheDirectory' => \TYPO3\CMS\Core\Core\Environment::getPublicPath() . "/" . Romm\SiteFactory\Core\Core::getProcessedFolderPath()
                 ]
             ];
 
