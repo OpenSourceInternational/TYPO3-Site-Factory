@@ -281,6 +281,14 @@
 				<source>The destination page with the uid "%d" could not be retrieved.</source>
 			</trans-unit>
 
+			<trans-unit id="duplication_process.clean_duplication_relations">
+				<source>Clean duplication relations …</source>
+			</trans-unit>
+
+			<trans-unit id="duplication_process.clean_external_relations">
+				<source>Clean External MM Relations …</source>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 			</trans-unit>

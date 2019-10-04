@@ -1,5 +1,64 @@
 module.tx_sitefactory {
 	duplicationProcesses {
+
+		# Сlear duplicate recording information to avoid duplicate copying.
+		cleanDuplicationRelations {
+			class = Romm\SiteFactory\Duplication\Process\CleanDuplicationRelationsProcess
+			label = duplication_process.clean_duplication_relations
+			usedInSiteModification = 1
+			settings {
+				tables {
+					tx_news_domain_model_news {
+						1 = t3_origuid
+						2 = t3ver_move_id
+						3 = t3ver_state
+						4 = t3ver_label
+						5 = t3ver_oid
+						6 = t3ver_id
+						7 = t3ver_wsid
+						8 = l10n_parent
+						9 = l10n_diffsource
+						10 = l10n_state
+					}
+					pages {
+						1 = l10n_parent
+						2 = l10n_source
+						3 = l10n_state
+						4 = t3_origuid
+						5 = l10n_diffsource
+						6 = t3ver_oid
+						7 = t3ver_id
+						8 = t3ver_label
+						9 = t3ver_wsid
+						10 = t3ver_state
+						11 = t3ver_count
+						12 = t3ver_tstamp
+						13 = t3ver_move_id
+					}
+				}
+			}
+		}
+
+		cleanExternalRelations {
+			class       = Romm\SiteFactory\Duplication\Process\CleanExternalRelationsProcess
+			label       = duplication_process.clean_external_relations
+			usedInSiteModification = 1
+			settings {
+				tables {
+					tx_news_domain_model_news_related_mm {
+						internal {
+							field = uid_local
+							table = tx_news_domain_model_news
+						}
+						external {
+							field = uid_foreign
+							table = tx_news_domain_model_news
+						}
+					}
+				}
+			}
+		}
+
 		# Will process the entire site's duplication: all the pages, sub pages and contents.
 		pagesDuplication {
 			class       = Romm\SiteFactory\Duplication\Process\PagesDuplicationProcess
@@ -81,15 +140,17 @@ module.tx_sitefactory {
 	}
 
 	duplication {
-		10  < module.tx_sitefactory.duplicationProcesses.pagesDuplication
-		20  < module.tx_sitefactory.duplicationProcesses.treeUidAssociation
-		30  < module.tx_sitefactory.duplicationProcesses.sysFileMounts
-#		40  < module.tx_sitefactory.duplicationProcesses.backendUserGroupCreation
-#		50  < module.tx_sitefactory.duplicationProcesses.backendUserCreation
-		60  < module.tx_sitefactory.duplicationProcesses.uploadedFiles
-		70  < module.tx_sitefactory.duplicationProcesses.backendConstantsAssignation
-		80  < module.tx_sitefactory.duplicationProcesses.linkToPageMedia
-		90  < module.tx_sitefactory.duplicationProcesses.LinkToPageBackendLayout
-		100 < module.tx_sitefactory.duplicationProcesses.saveSiteConfiguration
+		10  < module.tx_sitefactory.duplicationProcesses.cleanExternalRelations
+		20  < module.tx_sitefactory.duplicationProcesses.cleanDuplicationRelations
+		30  < module.tx_sitefactory.duplicationProcesses.pagesDuplication
+		40  < module.tx_sitefactory.duplicationProcesses.treeUidAssociation
+		50  < module.tx_sitefactory.duplicationProcesses.sysFileMounts
+#		60  < module.tx_sitefactory.duplicationProcesses.backendUserGroupCreation
+#		70  < module.tx_sitefactory.duplicationProcesses.backendUserCreation
+		80  < module.tx_sitefactory.duplicationProcesses.uploadedFiles
+		90  < module.tx_sitefactory.duplicationProcesses.backendConstantsAssignation
+		100  < module.tx_sitefactory.duplicationProcesses.linkToPageMedia
+		110  < module.tx_sitefactory.duplicationProcesses.LinkToPageBackendLayout
+		120 < module.tx_sitefactory.duplicationProcesses.saveSiteConfiguration
 	}
 }

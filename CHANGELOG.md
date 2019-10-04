@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.6.0] - 2019-10-04
+### Added
+ - `CleanDuplicationRelations` Process
+ - `CleanExternalRelations` Process
+ 
 ## [0.5.3] - 2018-12-14
 ### Fixed
 - cache absolute path

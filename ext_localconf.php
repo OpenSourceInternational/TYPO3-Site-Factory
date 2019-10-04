@@ -26,10 +26,10 @@ call_user_func(
             // Including main TypoScript files.
             $includeTypoScriptSyntax = '<INCLUDE_TYPOSCRIPT: source="FILE:%s">';
             $typoScriptFiles = [
-                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/DefaultConfiguration.ts',
-                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/FieldsTypesConfiguration.ts',
-                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/FieldsConfiguration.ts',
-                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/DuplicationConfiguration.ts'
+                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/DefaultConfiguration.typoscript',
+                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/FieldsTypesConfiguration.typoscript',
+                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/FieldsConfiguration.typoscript',
+                'EXT:' . $extensionKey . '/Configuration/TypoScript/Default/DuplicationConfiguration.typoscript'
             ];
             foreach ($typoScriptFiles as $filePath) {
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(sprintf($includeTypoScriptSyntax, $filePath));
