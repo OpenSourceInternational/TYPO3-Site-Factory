@@ -347,6 +347,17 @@
 				<source>Pages duplication…</source>
 				<target>Duplication des pages…</target>
 			</trans-unit>
+
+			<trans-unit id="duplication_process.clean_duplication_relations">
+				<source>Clean duplication relations …</source>
+				<target>Nettoyer les relations de duplication…</target>
+			</trans-unit>
+
+			<trans-unit id="duplication_process.clean_external_relations">
+				<source>Clean External MM Relations …</source>
+				<target>Nettoyer les relations externes MM…</target>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 				<target>Association des nouvelles pages…</target>
