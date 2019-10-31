@@ -257,9 +257,6 @@
 .fixed-menu #collapse-menu-tip {
 	text-align: justify;
 }
-.fixed-menu .easter-egg:hover {
-	text-decoration: none;
-}
 
 .form-evaluation-loading {
 	display: none;
