@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.6.1] - 2019-10-04
+### Fixed
+ - PHP 7.3 compatibility
+### Removed
+- Easter egg functionality
+
 ## [0.6.0] - 2019-10-04
 ### Added
  - `CleanDuplicationRelations` Process
