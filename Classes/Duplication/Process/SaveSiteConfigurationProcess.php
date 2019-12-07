@@ -96,7 +96,7 @@ class SaveSiteConfigurationProcess extends AbstractDuplicationProcess
         $errorHandling = $duplicatedSiteConfiguration['errorHandling'];
         foreach ($errorHandling as $index => $value) {
             if (isset($value['errorContentSource']) && isset($pagesUidAssociation[$value['errorContentSource']])) {
-                $value['errorContentSource'] = $pagesUidAssociation[$value['errorContentSource']];
+                $value['errorContentSource'] = (string)$pagesUidAssociation[$value['errorContentSource']];
                 $errorHandling[$index] = $value;
             }
         }
