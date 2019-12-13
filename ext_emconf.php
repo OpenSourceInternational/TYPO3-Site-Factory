@@ -3,7 +3,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title'       => 'Site Factory',
     'state'       => 'beta',
-    'version'     => '0.6.2',
+    'version'     => '0.7.0',
     'description' => 'Replicate and modify an existing website model very easily with a flexible and lean design. Read the code examples to understand and master all the TypoScript configuration, or extend the existing duplication processes. Based on freesite (created by Kasper Skårhøj) this project was originaly conceived by Cyril Wolfangel and is developped and maintained by Romain Canon. Join the project on https://github.com/romaincanon/TYPO3-Site-Factory',
     'category'    => 'module',
 
@@ -11,7 +11,7 @@ $EM_CONF[$_EXTKEY] = [
         'depends'   => [
             'extbase' => '',
             'fluid'   => '',
-            'typo3' => '8.7.0-9.9.99',
+            'typo3' => '9.0.0-9.5.99',
         ],
         'conflicts' => [],
         'suggests'  => []

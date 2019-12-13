@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TreeUidAssociationProcess extends AbstractDuplicationProcess
 {
-
     /**
      * After a node duplication, by knowing the source node's uid, and the
      * duplicated node's uid, this function will be able to associate every old
@@ -63,32 +62,22 @@ class TreeUidAssociationProcess extends AbstractDuplicationProcess
     private function getTreeUidAssociationRecursive($oldUid, $newUid)
     {
         $uidAssociation = [$oldUid => $newUid];
-
-
+        
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages');
         $query = $connection->createQueryBuilder();
         $query->getRestrictions()->removeAll();
-        $query->addSelectLiteral('uid')
-            ->from('pages')
-            ->where( 'deleted=0 AND pid=' . $oldUid)
-            ->orderBy('sorting');
-        $oldChildren = $query->execute()->fetchAll();
-
         $query->getRestrictions()->removeAll();
-        $query->addSelectLiteral('uid')
+        $query->addSelectLiteral('uid', 'site_factory_association_parent')
             ->from('pages')
             ->where( 'deleted=0 AND pid=' . $newUid)
             ->orderBy('sorting');
         $newChildren = $query->execute()->fetchAll();
-
-        if (array_keys($oldChildren) == array_keys($newChildren)) {
-            foreach ($oldChildren as $key => $oldChildUid) {
-                $childrenAssociation = $this->getTreeUidAssociationRecursive($oldChildUid['uid'], $newChildren[$key]['uid']);
-
-                foreach ($childrenAssociation as $childrenAssociationOldUid => $childrenAssociationNewUid) {
-                    $uidAssociation[$childrenAssociationOldUid] = $childrenAssociationNewUid;
-                }
+        
+        foreach ($newChildren as $newChild) {
+            $childrenAssociation = $this->getTreeUidAssociationRecursive($newChild['site_factory_association_parent'] , $newChild['uid']);
+            foreach ($childrenAssociation as $childrenAssociationOldUid => $childrenAssociationNewUid) {
+                $uidAssociation[$childrenAssociationOldUid] = $childrenAssociationNewUid;
             }
         }
 

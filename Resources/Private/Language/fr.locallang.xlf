@@ -358,6 +358,11 @@
 				<target>Nettoyer les relations externes MM…</target>
 			</trans-unit>
 
+			<trans-unit id="duplication_process.pages_association_preparation">
+				<source>Pages Associations Preparation …</source>
+				<target>Préparation des associations de pages …</target>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 				<target>Association des nouvelles pages…</target>
