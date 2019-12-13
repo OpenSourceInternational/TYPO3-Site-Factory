@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.7.0] - 2019-12-13
+### Added
+- `PagesAssociationPreparation` Process
+### Fixed
+- Algorithm for association a new tree, regardless of sorting
+
 ## [0.6.2] - 2019-10-04
 ### Fixed
 - force string type on `SaveSiteConfigurationProcess`  for site configuration property `errorContentSource`

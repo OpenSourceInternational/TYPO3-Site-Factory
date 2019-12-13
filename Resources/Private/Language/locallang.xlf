@@ -289,6 +289,10 @@
 				<source>Clean External MM Relations …</source>
 			</trans-unit>
 
+			<trans-unit id="duplication_process.pages_association_preparation">
+				<source>Pages Associations Preparation …</source>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 			</trans-unit>
