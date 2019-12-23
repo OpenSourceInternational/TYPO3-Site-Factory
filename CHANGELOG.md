@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.7.1] - 2019-12-23
+### Fixed 
+- `site_factory_association_parent` default value
+
 ## [0.7.0] - 2019-12-13
 ### Added
 - `PagesAssociationPreparation` Process

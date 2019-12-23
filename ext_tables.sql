@@ -23,5 +23,5 @@ CREATE TABLE sys_template (
 # Table structure extend for table 'pages'
 #
 CREATE TABLE pages (
-	site_factory_association_parent int(11) NOT NULL,
+	site_factory_association_parent int(11) DEFAULT '0' NOT NULL,
 );
