@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.7.2] - 2020-06-22
+### Fixed 
+- Do not display translations of pages in the list of available models
+
 ## [0.7.1] - 2019-12-23
 ### Fixed 
 - `site_factory_association_parent` default value

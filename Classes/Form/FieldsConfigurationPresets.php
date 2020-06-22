@@ -15,6 +15,9 @@ namespace Romm\SiteFactory\Form;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Core\Core;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -37,10 +40,13 @@ class FieldsConfigurationPresets
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages');
         $query = $connection->createQueryBuilder();
-        $query->getRestrictions()->removeAll();
+        $query->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $query->addSelectLiteral('uid, title')
             ->from('pages')
-            ->where('deleted=0 AND pid=' . $modelSitesPid);
+            ->where(
+                $query->expr()->eq('pid', $query->createNamedParameter($modelSitesPid, Connection::PARAM_INT)),
+                $query->expr()->eq('sys_language_uid', $query->createNamedParameter(self::getSysLanguageUid(), Connection::PARAM_INT))
+            );
         $aModelSites = $query->execute()->fetchAll();
 
 
@@ -83,5 +89,15 @@ class FieldsConfigurationPresets
         }
 
         return $result;
+    }
+
+    /**
+     * @return int
+     */
+    protected static function getSysLanguageUid(): int
+    {
+        return GeneralUtility::makeInstance(Context::class)
+            ->getAspect('language')
+            ->getId();
     }
 }
