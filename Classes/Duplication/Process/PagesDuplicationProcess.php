@@ -14,6 +14,7 @@
 namespace Romm\SiteFactory\Duplication\Process;
 
 use TYPO3\CMS\Backend\Tree\TreeNode;
+use Romm\SiteFactory\Duplication\Raw\PageRawDuplicator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Romm\SiteFactory\Utility\PaetreeCommandsUtility;
 use Romm\SiteFactory\Duplication\AbstractDuplicationProcess;
@@ -40,25 +41,25 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         $copyDestination = intval($this->getDuplicationData('copyDestination'));
 
         // Testing if the values and $copyDestination is valid.
+        // We don't need to check it because we must be able to copy in root.
+//        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+//            ->getConnectionForTable('pages');
+//        $query = $connection->createQueryBuilder();
+//        $query->getRestrictions()->removeAll();
+//        $query->addSelectLiteral('uid')
+//            ->from('pages')
+//            ->where('deleted = 0 AND uid = ' . intval($copyDestination));
+//        $testCopyDestination = $query->execute()->fetchAll();
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('pages');
-        $query = $connection->createQueryBuilder();
-        $query->getRestrictions()->removeAll();
-        $query->addSelectLiteral('uid')
-            ->from('pages')
-            ->where('deleted = 0 AND uid = ' . intval($copyDestination));
-        $testCopyDestination = $query->execute()->fetchAll();
-
-        if ($testCopyDestination === false) {
-            $this->addError(
-                'duplication_process.pages_duplication.error.wrong_destination_uid',
-                1431372959,
-                ['d' => $copyDestination]
-            );
-
-            return;
-        }
+//        if ($testCopyDestination === false) {
+//            $this->addError(
+//                'duplication_process.pages_duplication.error.wrong_destination_uid',
+//                1431372959,
+//                ['d' => $copyDestination]
+//            );
+//
+//            return;
+//        }
 
         // Calling duplication process.
         $duplicatedPageUid = $this->copyNodeToDestination($modelPageUid, $copyDestination);
@@ -93,15 +94,19 @@ class PagesDuplicationProcess extends AbstractDuplicationProcess
         $GLOBALS['BE_USER']->uc['copyLevels'] = 100;
         $GLOBALS['BE_USER']->workspace = 0;
 
-        $nodeData = new \stdClass();
-        $nodeData->serializeClassName = TreeNode::class;
-        $nodeData->id = $nodeUid;
-        $nodeData->type = 'pages';
+        if ($this->extensionConfiguration['useRawPageDuplicator']) {
+            $duplicator = $this->objectManager->get(PageRawDuplicator::class);
+            $duplicatedPageUid = $duplicator->copy($nodeUid, $destinationUid);
+        } else {
+            $nodeData = new \stdClass();
+            $nodeData->serializeClassName = TreeNode::class;
+            $nodeData->id = $nodeUid;
+            $nodeData->type = 'pages';
 
-        /** @var TreeNode $node */
-        $node = GeneralUtility::makeInstance(TreeNode::class, (array)$nodeData);
-
-        $duplicatedPageUid = PaetreeCommandsUtility::copyNode($node, $destinationUid);
+            /** @var TreeNode $node */
+            $node = GeneralUtility::makeInstance(TreeNode::class, (array)$nodeData);
+            $duplicatedPageUid = PaetreeCommandsUtility::copyNode($node, $destinationUid);
+        }
 
         //emable copied node
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
