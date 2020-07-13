@@ -289,7 +289,14 @@ class ContentElementRawUpdater
         $value = $field['vDEF'];
 
         if ($fieldConfig['internal_type'] === 'db') {
-            return (string) ($this->idsMapping[$fieldConfig['allowed']][(int) $value] ?? $value);
+            $ids = explode(',', $value);
+            $newIds = [];
+
+            foreach ($ids as $id) {
+                $newIds[] = $this->idsMapping[$fieldConfig['allowed']][(int) $id] ?? $id;
+            }
+
+            return implode(',', $newIds);
         }
 
         if (in_array($fieldConfig['type'],['radio', 'text', 'select', 'check'])) {
@@ -314,7 +321,7 @@ class ContentElementRawUpdater
                 $newIds[] = $this->idsMapping[$fieldConfig['foreign_table']][(int) $id] ?? $id;
             }
 
-           return implode(',', $newIds);
+            return implode(',', $newIds);
         }
 
         return $value;
