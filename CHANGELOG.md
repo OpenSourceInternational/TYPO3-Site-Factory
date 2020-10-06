@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.8.2] - 2020-10-06
+### Fixed 
+- TYPO3 9.5.21 compatibility
+
 ## [0.8.1] - 2020-07-13
 ### Fixed 
 - Flux multi relation field processing

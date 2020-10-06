@@ -91,8 +91,7 @@ class AdministrationController extends AbstractController
         /** @var Save[] $savedSites */
         $savedSitessPid = Core::getExtensionConfiguration('copyDestination');
         $defaultQuerySettings = Core::getObjectManager()->get(QuerySettingsInterface::class);
-        $defaultQuerySettings->setRespectStoragePage(true);
-        $defaultQuerySettings->setStoragePageIds([$savedSitessPid]);
+        $defaultQuerySettings->setRespectStoragePage(false);
         $this->saveRepository->setDefaultQuerySettings($defaultQuerySettings);
         $savedSites = $this->saveRepository->findAll();
         // Adding root page of the site in the configuration.
@@ -109,8 +108,8 @@ class AdministrationController extends AbstractController
             /** @var Pages $page */
             $page = $this->pagesRepository->findByUid($site->getRootPageUid());
 
-            // The page may have been deleted.
-            if (!$page) {
+            // The page may have been deleted or not in $savedSitessPid.
+            if (!$page || $page->getPid() != $savedSitessPid) {
                 continue;
             }
 

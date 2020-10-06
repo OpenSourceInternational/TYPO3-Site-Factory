@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-04-01T09:45:06Z" product-name="site_factory">
+		<header/>
+		<body>
+			<trans-unit id="tx_sitefactory_domain_model_save">
+				<source>SiteFactory site configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_sitefactory_domain_model_save.root_page_uid">
+				<source>Root page uid</source>
+			</trans-unit>
+			<trans-unit id="tx_sitefactory_domain_model_save.date">
+				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="tx_sitefactory_domain_model_save.configuration">
+				<source>Configuration</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
