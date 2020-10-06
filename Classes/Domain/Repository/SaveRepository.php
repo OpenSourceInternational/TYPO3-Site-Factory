@@ -38,10 +38,11 @@ class SaveRepository extends Repository
      * @return array|mixed|null|QueryResultInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
      */
-    public function findLastByRootPageUid($rootPageUid)
+    public function findOneByRootPageUid($rootPageUid)
     {
         /** @var Query $query */
         $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
 
         $query->matching(
             $query->logicalAnd(
