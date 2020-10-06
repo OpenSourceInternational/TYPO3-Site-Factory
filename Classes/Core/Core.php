@@ -266,7 +266,7 @@ class Core
 
         /** @var SaveRepository $saveRepository */
         $saveRepository = $objectManager->get(SaveRepository::class);
-        $save = $saveRepository->findLastByRootPageUid($uid);
+        $save = $saveRepository->findOneByRootPageUid($uid);
 
         if (!$save) {
             throw new \Exception('The uid "' . $uid . '" does not match an editable site.', 1423831279);

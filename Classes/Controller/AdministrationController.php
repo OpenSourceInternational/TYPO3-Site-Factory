@@ -347,7 +347,7 @@ class AdministrationController extends AbstractController
             $cacheData['duplicationData']['duplicatedPageUid'] = $modifySite;
 
             /** @var Save $savedSite */
-            $savedSite = $this->saveRepository->findLastByRootPageUid($modifySite);
+            $savedSite = $this->saveRepository->findOneByRootPageUid($modifySite);
             $cacheData['savedSite'] = $savedSite->getConfiguration();
         } else {
             $cacheData['duplicationData']['modelPageUid'] = $cacheData['fieldsValues']['modelSite'];

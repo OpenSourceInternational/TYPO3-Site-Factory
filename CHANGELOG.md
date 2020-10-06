@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.8.3] - 2020-10-06
+### Fixed 
+- Incorrect method invocation in the admin controller
+
 ## [0.8.2] - 2020-10-06
 ### Fixed 
 - TYPO3 9.5.21 compatibility
