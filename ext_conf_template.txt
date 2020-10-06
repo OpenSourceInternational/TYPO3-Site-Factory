@@ -3,3 +3,6 @@ modelSitesPid = 0
 
 # cat=Basic; type=int+; label=LLL:EXT:site_factory/Resources/Private/Language/locallang_em.xlf:copy_destination_uid
 copyDestination = 0
+
+# cat=Basic; type=boolean; label=LLL:EXT:site_factory/Resources/Private/Language/locallang_em.xlf:use_raw_page_duplicator
+useRawPageDuplicator = 0

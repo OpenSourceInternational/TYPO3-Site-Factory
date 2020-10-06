@@ -14,6 +14,11 @@
 				<target>Uid de la page vers laquelle seront dupliqué les sites</target>
 			</trans-unit>
 
+			<trans-unit id="use_raw_page_duplicator">
+				<source>Use raw page duplicator</source>
+				<target>Utiliser le duplicateur de pages brutes</target>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

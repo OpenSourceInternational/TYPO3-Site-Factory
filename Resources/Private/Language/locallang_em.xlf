@@ -12,6 +12,10 @@
 				<source>Uid of the page where the sites will be duplicated</source>
 			</trans-unit>
 
+			<trans-unit id="use_raw_page_duplicator">
+				<source>Use raw page duplicator</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
