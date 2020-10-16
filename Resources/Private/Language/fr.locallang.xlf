@@ -363,6 +363,11 @@
 				<target>Préparation des associations de pages …</target>
 			</trans-unit>
 
+			<trans-unit id="duplication_process.normalize_site_configurations">
+				<source>Sites configurations normalization …</source>
+				<target>Normalisation des configurations de sites …</target>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 				<target>Association des nouvelles pages…</target>

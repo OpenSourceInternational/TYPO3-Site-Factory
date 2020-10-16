@@ -293,6 +293,10 @@
 				<source>Pages Associations Preparation …</source>
 			</trans-unit>
 
+			<trans-unit id="duplication_process.normalize_site_configurations">
+				<source>Sites configurations normalization …</source>
+			</trans-unit>
+
 			<trans-unit id="duplication_process.pages_association">
 				<source>New pages association…</source>
 			</trans-unit>

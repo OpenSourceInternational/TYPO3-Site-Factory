@@ -65,6 +65,12 @@ module.tx_sitefactory {
 			usedInSiteModification = 1
 		}
 
+		normalizeSiteConfigurations {
+			class       = Romm\SiteFactory\Duplication\Process\NormalizeSiteConfigurationsProcess
+			label       = duplication_process.normalize_site_configurations
+			usedInSiteModification = 1
+		}
+
 		# Will process the entire site's duplication: all the pages, sub pages and contents.
 		pagesDuplication {
 			class       = Romm\SiteFactory\Duplication\Process\PagesDuplicationProcess
@@ -149,15 +155,16 @@ module.tx_sitefactory {
 		10  < module.tx_sitefactory.duplicationProcesses.cleanExternalRelations
 		20  < module.tx_sitefactory.duplicationProcesses.cleanDuplicationRelations
 		30  < module.tx_sitefactory.duplicationProcesses.pagesAssociationPreparation
-		40  < module.tx_sitefactory.duplicationProcesses.pagesDuplication
-		50  < module.tx_sitefactory.duplicationProcesses.treeUidAssociation
-		60  < module.tx_sitefactory.duplicationProcesses.sysFileMounts
-#		70  < module.tx_sitefactory.duplicationProcesses.backendUserGroupCreation
-#		80  < module.tx_sitefactory.duplicationProcesses.backendUserCreation
-		90  < module.tx_sitefactory.duplicationProcesses.uploadedFiles
-		100  < module.tx_sitefactory.duplicationProcesses.backendConstantsAssignation
-		110  < module.tx_sitefactory.duplicationProcesses.linkToPageMedia
-		120  < module.tx_sitefactory.duplicationProcesses.LinkToPageBackendLayout
-		130 < module.tx_sitefactory.duplicationProcesses.saveSiteConfiguration
+		40  < module.tx_sitefactory.duplicationProcesses.normalizeSiteConfigurations
+		50  < module.tx_sitefactory.duplicationProcesses.pagesDuplication
+		60  < module.tx_sitefactory.duplicationProcesses.treeUidAssociation
+		70  < module.tx_sitefactory.duplicationProcesses.sysFileMounts
+#		80  < module.tx_sitefactory.duplicationProcesses.backendUserGroupCreation
+#		90  < module.tx_sitefactory.duplicationProcesses.backendUserCreation
+		100  < module.tx_sitefactory.duplicationProcesses.uploadedFiles
+		110  < module.tx_sitefactory.duplicationProcesses.backendConstantsAssignation
+		120  < module.tx_sitefactory.duplicationProcesses.linkToPageMedia
+		130  < module.tx_sitefactory.duplicationProcesses.LinkToPageBackendLayout
+		140 < module.tx_sitefactory.duplicationProcesses.saveSiteConfiguration
 	}
 }
