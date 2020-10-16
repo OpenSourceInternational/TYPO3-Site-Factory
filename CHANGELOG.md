@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.9.0] - 2020-10-16
+### Added 
+- Sites configurations normalization process
+
 ## [0.8.3] - 2020-10-06
 ### Fixed 
 - Incorrect method invocation in the admin controller

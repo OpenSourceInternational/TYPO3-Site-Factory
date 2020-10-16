@@ -53,6 +53,8 @@ class SaveSiteConfigurationProcess extends AbstractDuplicationProcess
             $saveObject->setRootPageUid($this->getDuplicatedPageUid());
         }
 
+        $saveObject->setPid(0);
+
         $configuration = $this->getDuplicationData();
         ArrayUtility::mergeRecursiveWithOverrule(
             $configuration,
