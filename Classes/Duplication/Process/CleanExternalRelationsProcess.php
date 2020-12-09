@@ -23,9 +23,12 @@ class CleanExternalRelationsProcess extends AbstractDuplicationProcess
     {
         $modelPageUid = $this->getModelPageUid();
         $this->cleanExternalRelations($modelPageUid);
-        $duplicatedPageUid = $this->getDuplicationData('duplicatedPageUid');
-        if ($duplicatedPageUid) {
-            $this->cleanExternalRelations($duplicatedPageUid);
+
+        if ((bool)$this->getProcessSettings('clearForGeneratedSite')) {
+            $duplicatedPageUid = $this->getDuplicationData('duplicatedPageUid');
+            if ($duplicatedPageUid) {
+                $this->cleanExternalRelations($duplicatedPageUid);
+            }
         }
     }
     
