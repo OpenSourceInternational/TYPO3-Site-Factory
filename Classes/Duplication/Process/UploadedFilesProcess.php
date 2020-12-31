@@ -72,6 +72,11 @@ class UploadedFilesProcess extends AbstractDuplicationProcess
                     $driver = $resourceFactory->getDriverObject($storage->getDriverType(), $storage->getConfiguration());
                     $driver->processConfiguration();
 
+                    //Create folder if not exist
+                    if(!$driver->folderExists($folder->getIdentifier())) {
+                        $driver->createFolder($folder->getIdentifier(), '', true);
+                    }
+
                     foreach ($filesFields as $field) {
                         $name = $field->getName();
                         $path = $field->getValue();

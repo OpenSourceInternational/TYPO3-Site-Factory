@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this extension will be documented in this file.
 
+## [0.10.0] - 2020-12-31
+### Fixed 
+- Create a folder to download files if it doesn't exist.
+
 ## [0.10.0] - 2020-12-09
 ### Added 
 - Added settings to control cleaning relations on generated site (disabled by default)
